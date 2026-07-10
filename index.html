@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Defense</title>
+<meta name="description" content="QA tower defense: place test layers along the CI/CD pipeline and stop bugs from reaching production.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐛</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Level Select Overlay -->
+<div id="level-select">
+  <h2>PIPELINE DEFENSE</h2>
+  <div class="ls-sub">CHOOSE YOUR ENVIRONMENT</div>
+  <div class="level-cards" id="level-cards"></div>
+</div>
+
+<h1>Pipeline Defense <span>QA Tower Defense</span></h1>
+<div id="game-wrapper">
+
+  <!-- LEFT: Shop -->
+  <div class="panel" id="shop-panel">
+    <h3>Test Layers</h3>
+
+    <div class="shop-section-label">UNIT &amp; BROWSER</div>
+    <button class="tower-btn" id="btn-unit" onclick="selectTower('unit')">
+      <div style="color:#22c55e">🧪 Unit Test <kbd>1</kbd></div>
+      <div class="btn-cost">$50 &middot; Fast fire &middot; Short range</div>
+      <div class="btn-desc">Destroys off-by-one bugs (x3 dmg)</div>
+    </button>
+    <button class="tower-btn" id="btn-cypress" onclick="selectTower('cypress')">
+      <div style="color:#69d3a7">🌲 Cypress <kbd>2</kbd></div>
+      <div class="btn-cost">$200 &middot; Fast &middot; Short-mid range</div>
+      <div class="btn-desc">Retries flaky misses. Strong vs unit/interface.</div>
+    </button>
+    <button class="tower-btn" id="btn-selenium" onclick="selectTower('selenium')">
+      <div style="color:#f97316">Se Selenium <kbd>3</kbd></div>
+      <div class="btn-cost">$250 &middot; Slow &middot; Mid range</div>
+      <div class="btn-desc">Interface specialist. High flakiness, retryable.</div>
+    </button>
+    <button class="tower-btn" id="btn-playwright" onclick="selectTower('playwright')">
+      <div style="color:#2dd4bf">🎭 Playwright <kbd>4</kbd></div>
+      <div class="btn-cost">$350 &middot; Parallel &middot; Mid range</div>
+      <div class="btn-desc">Fires at 2 targets simultaneously.</div>
+    </button>
+
+    <div class="shop-section-label">API &amp; INTEGRATION</div>
+    <button class="tower-btn" id="btn-postman" onclick="selectTower('postman')">
+      <div style="color:#FF6C37">📮 Postman <kbd>5</kbd></div>
+      <div class="btn-cost">$180 &middot; Fast &middot; Short-mid range</div>
+      <div class="btn-desc">Best vs floating point and silent failure bugs.</div>
+    </button>
+    <button class="tower-btn" id="btn-integration" onclick="selectTower('integration')">
+      <div style="color:#3b82f6">🔗 Integration <kbd>6</kbd></div>
+      <div class="btn-cost">$150 &middot; Medium &middot; Mid range</div>
+      <div class="btn-desc">Best against floating point and permission bugs.</div>
+    </button>
+    <button class="tower-btn" id="btn-db" onclick="selectTower('db')">
+      <div style="color:#a16207">🗄 DB Test <kbd>7</kbd></div>
+      <div class="btn-cost">$280 &middot; Slow &middot; Short range</div>
+      <div class="btn-desc">Destroys race condition and state mutation bugs.</div>
+    </button>
+
+    <div class="shop-section-label">ADVANCED</div>
+    <button class="tower-btn" id="btn-e2e" onclick="selectTower('e2e')">
+      <div style="color:#f59e0b">🔄 E2E Test <kbd>8</kbd></div>
+      <div class="btn-cost">$300 &middot; Slow &middot; Long range &middot; SPLASH</div>
+      <div class="btn-desc">Handles race conditions. AOE splash + slows.</div>
+    </button>
+    <button class="tower-btn" id="btn-docker" onclick="selectTower('docker')">
+      <div style="color:#0ea5e9">🐳 Docker <kbd>9</kbd></div>
+      <div class="btn-cost">$450 &middot; Freeze &middot; Mid range</div>
+      <div class="btn-desc">Isolates bugs for 2s. Destroys permission esc.</div>
+    </button>
+    <button class="tower-btn" id="btn-perf" onclick="selectTower('perf')">
+      <div style="color:#ec4899">⚡ Perf Test <kbd>0</kbd></div>
+      <div class="btn-cost">$400 &middot; Slow &middot; Long range &middot; SPLASH</div>
+      <div class="btn-desc">AOE damage. Best vs boss and megaboss.</div>
+    </button>
+    <button class="tower-btn" id="btn-ai" onclick="selectTower('ai')">
+      <div style="color:#a855f7">🤖 AI Assertion <kbd>A</kbd></div>
+      <div class="btn-cost">$500 &middot; Smart &middot; Max range</div>
+      <div class="btn-desc">Catches timezone and silent failure bugs.</div>
+    </button>
+
+    <hr class="divider">
+    <button id="triage-btn" onclick="runTriage()">AI Triage ($200) <kbd>T</kbd></button>
+    <div style="font-size:0.58rem;color:#374151;margin-top:4px">Active ability: scans all towers and cuts flakiness by 60. Stacks with each use. Run when red bars appear.</div>
+    <hr class="divider mobile-hide">
+    <div class="mobile-hide" style="font-size:0.6rem;color:#4b5563;margin-bottom:5px">BUG TYPES</div>
+    <div class="legend-item mobile-hide"><div class="ldot" style="background:#ef4444"></div>+-1 Off-by-one: fast, fragile</div>
+    <div class="legend-item mobile-hide"><div class="ldot" style="background:#f97316"></div>.1 Floating point: precision errors</div>
+    <div class="legend-item mobile-hide"><div class="ldot" style="background:#8b5cf6"></div>|| Race condition: slow, tanky</div>
+    <div class="legend-item mobile-hide"><div class="ldot" style="background:#94a3b8"></div>TZ Timezone: unpredictable</div>
+    <div class="legend-item mobile-hide"><div class="ldot" style="background:#dc2626"></div>MUT State mutation: splits on death</div>
+    <div class="legend-item mobile-hide"><div class="ldot" style="background:#16a34a"></div>?! Silent failure: invisible until late</div>
+    <div class="legend-item mobile-hide"><div class="ldot" style="background:#0f766e"></div>SU Permission esc: immune to Unit</div>
+    <div class="legend-item mobile-hide"><div class="ldot" style="background:#7e22ce"></div>2x Idempotency: 25% chance to duplicate</div>
+    <div class="legend-item mobile-hide"><div class="ldot" style="background:#eab308"></div>ML Memory leak: regenerates HP</div>
+    <div class="legend-item mobile-hide"><div class="ldot" style="background:#ea580c;border-radius:2px"></div>Boss: high HP, slow</div>
+    <div class="legend-item mobile-hide"><div class="ldot" style="background:#7c3aed;border-radius:2px"></div>Megaboss: elite threat</div>
+    <hr class="divider mobile-hide">
+    <div class="mobile-hide" style="font-size:0.6rem;color:#4b5563;margin-bottom:4px">MECHANICS</div>
+    <div class="legend-item mobile-hide" style="color:#94a3b8">Synergy: adjacent towers fire 15% faster</div>
+    <div class="legend-item mobile-hide" style="color:#94a3b8">Cyan ring: slowed bug</div>
+    <div class="legend-item mobile-hide" style="color:#94a3b8">Blue glow: frozen bug (Docker)</div>
+    <div class="legend-item mobile-hide" style="color:#94a3b8">Early wave call: cash bonus</div>
+  </div>
+
+  <!-- CANVAS -->
+  <div id="canvas-wrapper">
+    <div id="toolbar">
+      <button class="tb-btn" id="btn-pause" onclick="togglePause()">⏸ PAUSE</button>
+      <button class="tb-btn" id="btn-speed" onclick="cycleSpeed()">1× SPEED</button>
+      <button class="tb-btn" id="btn-auto" onclick="toggleAutoWave()">AUTO-WAVE: OFF</button>
+      <button class="tb-btn" id="btn-sound" onclick="toggleMute()">🔊 SOUND</button>
+    </div>
+    <canvas id="game" width="840" height="600"></canvas>
+    <div id="msg-bar">Choose a level to begin.</div>
+  </div>
+
+  <!-- RIGHT: Stats -->
+  <div class="panel" id="stats-panel">
+    <h3>Status</h3>
+    <div class="stat-row"><span class="stat-label">Budget</span><span class="sv y" id="s-budget">$0</span></div>
+    <div class="stat-row"><span class="stat-label">Score</span><span class="sv g" id="s-score">0</span></div>
+    <div class="stat-row"><span class="stat-label">Lives</span><span class="sv r" id="s-lives">0</span></div>
+    <div class="stat-row"><span class="stat-label">Wave</span><span class="sv" id="s-wave">0 / 0</span></div>
+    <div class="stat-row"><span class="stat-label">Bugs active</span><span class="sv" id="s-bugs">0</span></div>
+    <button id="wave-btn" onclick="startWave()">&#9654; SEND WAVE</button>
+    <hr class="divider">
+    <h3>Next Wave</h3>
+    <div id="wave-preview"><span class="pv-none">—</span></div>
+    <hr class="divider mobile-hide">
+    <div class="mobile-hide">
+      <h3>Shift-Left Bonus</h3>
+      <div class="info-text">
+        <span style="color:#22c55e">Near start: 10x score</span>
+        <span style="color:#fbbf24">Midpipe: 3x score</span>
+        <span style="color:#ef4444">Near prod: 1x score</span>
+      </div>
+    </div>
+    <hr class="divider mobile-hide">
+    <div class="mobile-hide">
+      <h3>Test Debt</h3>
+      <div class="info-text">
+        Towers degrade each wave. Flaky tests miss shots. Red bar = danger. Use AI Triage to stabilize.
+      </div>
+    </div>
+    <hr class="divider mobile-hide">
+    <div class="mobile-hide">
+      <h3>Controls</h3>
+      <div class="info-text">
+        <span>Click empty: place tower</span>
+        <span>Click tower: select/inspect</span>
+        <span>Right-click/ESC: cancel</span>
+        <span>Space: send wave &middot; P: pause</span>
+        <span>F: speed &middot; M: mute &middot; T: triage</span>
+        <span>U: upgrade &middot; X: sell</span>
+      </div>
+    </div>
+    <hr class="divider" id="tower-divider" style="display:none">
+    <div id="tower-info" style="display:none">
+      <h3>Selected Tower</h3>
+      <div id="ti-name" style="font-size:0.72rem;font-weight:bold;margin-bottom:2px"></div>
+      <div id="ti-level" style="font-size:0.6rem;color:#4b5563;margin-bottom:6px"></div>
+      <div id="ti-stats" style="font-size:0.6rem;color:#6b7280;line-height:1.8;margin-bottom:8px"></div>
+      <button class="btn-target" id="ti-target-btn" onclick="cycleTargetMode()">TARGET: FIRST</button>
+      <button class="btn-upgrade" id="ti-upgrade-btn" onclick="upgradeTower()"></button>
+      <button class="btn-sell" id="ti-sell-btn" onclick="sellTower()"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Game Over / Win Overlay -->
+<div id="overlay">
+  <h2 id="o-title">Game Over</h2>
+  <div class="final-score" id="o-score"></div>
+  <div class="final-detail" id="o-detail"></div>
+  <div id="o-name-row">
+    <input id="o-name" type="text" placeholder="Your name" maxlength="20" />
+    <button id="o-save-btn" onclick="saveScore()">Save Score</button>
+  </div>
+  <div id="o-leaderboard"></div>
+  <div class="overlay-btns">
+    <button id="endless-btn" onclick="continueEndless()" style="display:none">⚡ Continue — Endless</button>
+    <button id="restart-btn" onclick="restartGame()">Restart Level</button>
+    <button id="choose-level-btn" onclick="goLevelSelect()">Choose Level</button>
+    <button id="home-btn" onclick="window.location.href='https://rowan-kendal.com'">Home</button>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/entities.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
