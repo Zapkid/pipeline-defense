@@ -1,5 +1,5 @@
 // ────────────────────────────────────────────────────────────
-// SFX — tiny WebAudio synth, no assets
+// SFX: tiny WebAudio synth, no assets
 // ────────────────────────────────────────────────────────────
 const SFX = (() => {
   let actx = null;

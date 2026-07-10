@@ -1,0 +1,71 @@
+<script>
+// Headless smoke-test driver. scripts/smoke-test.sh appends this to a copy of
+// index.html and greps the dumped DOM for TEST-PASS. It pumps update() manually
+// because requestAnimationFrame does not fire under --dump-dom headless mode.
+window.__errors = [];
+window.addEventListener('error', e => window.__errors.push(e.message + ' @ ' + e.filename + ':' + e.lineno));
+window.addEventListener('load', () => {
+  const out = document.createElement('pre'); out.id = 'test-out'; document.body.appendChild(out);
+  const log = s => { out.textContent += s + '\n'; };
+  try {
+    chooseLevel(0);
+    for (const [type, c, r] of [['unit',1,3],['unit',3,3],['postman',5,6],['integration',3,5]]) {
+      state.placing = type;
+      placeTower(c, r);
+    }
+    state.placing = null;
+    log('towers=' + state.towers.length + ' budget=' + state.budget);
+
+    state.placing = 'unit';
+    const nBefore = state.towers.length;
+    placeTower(0, 4);  // on path: must be rejected
+    placeTower(1, 3);  // occupied: must be rejected
+    const rejected = state.towers.length === nBefore;
+    log('rejectedPlacements=' + rejected);
+    state.placing = null;
+
+    selectPlacedTower(1, 3);
+    cycleTargetMode();
+    const modeOk = state.selectedTower && state.selectedTower.targetMode === 1;
+    upgradeTower();
+    const upgradeOk = state.towers[0].level === 2;
+    log('targetMode+upgrade=' + (modeOk && upgradeOk));
+    selectPlacedTower(1, 3);
+
+    startWave();
+    let simSec = 0;
+    const pump = setInterval(() => {
+      for (let i = 0; i < 120 && !state.gameOver && !state.gameWon; i++) {
+        update(1/60); simSec += 1/60;
+        if (!state.waveActive && state.bugs.length === 0 && !state.gameOver
+            && hasNextWave() && state.wave === state.cleared) startWave();
+      }
+      try { render(); } catch (e) { window.__errors.push('render: ' + e.message); }
+      if (state.cleared >= 2 || state.gameOver || simSec > 600) {
+        clearInterval(pump);
+        log('simSec=' + Math.round(simSec) + ' cleared=' + state.cleared + ' lives=' + state.lives +
+            ' score=' + state.score + ' gameOver=' + state.gameOver);
+        const kills = state.towers.reduce((a, t) => a + t.kills, 0);
+        log('kills=' + kills);
+        runTriage();
+        selectPlacedTower(1, 3); sellTower();
+        showOverlay(false);
+        document.getElementById('o-name').value = '<img src=x onerror=alert(1)>';
+        saveScore();
+        setTimeout(() => {
+          const xssOk = !document.getElementById('o-leaderboard').innerHTML.includes('<img');
+          log('xssEscaped=' + xssOk);
+          showHighScores();
+          const hsOk = document.getElementById('scores-modal').classList.contains('show');
+          hideHighScores();
+          log('highScoresModal=' + hsOk);
+          log('errors=' + JSON.stringify(window.__errors));
+          const pass = state.cleared >= 2 && state.lives > 0 && kills > 0 && rejected
+            && modeOk && upgradeOk && xssOk && hsOk && window.__errors.length === 0;
+          log(pass ? 'TEST-PASS' : 'TEST-FAIL');
+        }, 50);
+      }
+    }, 5);
+  } catch (e) { log('EXCEPTION ' + e.message + '\n' + e.stack); log('TEST-FAIL'); }
+});
+</script>

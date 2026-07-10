@@ -332,7 +332,7 @@ function renderWavePreview() {
   lastPreviewKey = key;
   const el = document.getElementById('wave-preview');
   if (!CURRENT_LEVEL || state.gameWon || !hasNextWave()) {
-    el.innerHTML = '<span class="pv-none">—</span>';
+    el.innerHTML = '<span class="pv-none">-</span>';
     return;
   }
   const def = nextWaveDef();
@@ -392,26 +392,52 @@ function updateUI() {
 }
 
 // ────────────────────────────────────────────────────────────
-// LEADERBOARD (local)
+// HIGH SCORES
+// One global list across all levels. Stored in localStorage; if
+// SCORES_ENDPOINT is set (GET returns {scores:[...]}, POST accepts an
+// entry) it is used as the source of truth and fails soft to local.
 // ────────────────────────────────────────────────────────────
-function loadScores() {
+const SCORES_ENDPOINT = null;
+
+function localScores() {
   try { return JSON.parse(localStorage.getItem('pd_scores') || '[]'); } catch (e) { return []; }
 }
 
-function submitScore(name, score, level) {
+async function loadScores() {
+  if (SCORES_ENDPOINT) {
+    try {
+      const r = await fetch(SCORES_ENDPOINT);
+      const scores = (await r.json()).scores;
+      if (Array.isArray(scores)) return scores;
+    } catch (e) {}
+  }
+  return localScores();
+}
+
+async function submitScore(name, score, level) {
   const entry = { name, score, level, date: new Date().toISOString().slice(0, 10) };
-  const scores = loadScores();
+  const scores = localScores();
   scores.push(entry);
   scores.sort((a, b) => b.score - a.score);
   scores.splice(10);
   savePref('pd_scores', JSON.stringify(scores));
+  if (SCORES_ENDPOINT) {
+    try {
+      const r = await fetch(SCORES_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry)
+      });
+      const remote = (await r.json()).scores;
+      if (Array.isArray(remote)) return remote;
+    } catch (e) {}
+  }
   return scores;
 }
 
-function renderLeaderboard(scores, highlightScore) {
-  const el = document.getElementById('o-leaderboard');
+function renderLeaderboard(el, scores, highlightScore) {
   if (!scores.length) {
-    el.innerHTML = '<div style="color:#4b5563;font-size:0.7rem;text-align:center">No scores yet. Be first!</div>';
+    el.innerHTML = '<div style="color:#4b5563;font-size:0.7rem;text-align:center;padding:12px 0">No scores yet. Be first!</div>';
     return;
   }
   const rows = scores.map((s, i) => {
@@ -421,14 +447,26 @@ function renderLeaderboard(scores, highlightScore) {
   el.innerHTML = `<table><thead><tr><th>#</th><th>Name</th><th>Score</th><th>Level</th><th>Date</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-function saveScore() {
+async function saveScore() {
   const name = (document.getElementById('o-name').value || 'Anonymous').trim() || 'Anonymous';
   document.getElementById('o-save-btn').disabled = true;
   document.getElementById('o-save-btn').textContent = 'Saved!';
   const overtime = state.cleared - WAVE_DEFS.length;
   const levelLabel = CURRENT_LEVEL
     ? CURRENT_LEVEL.name + (overtime > 0 ? ` +${overtime}` : '') : '';
-  renderLeaderboard(submitScore(name, state.score, levelLabel), state.score);
+  const scores = await submitScore(name, state.score, levelLabel);
+  renderLeaderboard(document.getElementById('o-leaderboard'), scores, state.score);
+}
+
+function showHighScores() {
+  document.getElementById('scores-modal').classList.add('show');
+  const el = document.getElementById('hs-list');
+  el.innerHTML = '<div style="color:#4b5563;font-size:0.7rem;text-align:center;padding:12px 0">Loading…</div>';
+  loadScores().then(scores => renderLeaderboard(el, scores, null));
+}
+
+function hideHighScores() {
+  document.getElementById('scores-modal').classList.remove('show');
 }
 
 // ────────────────────────────────────────────────────────────
@@ -705,7 +743,8 @@ function showOverlay(won) {
   document.getElementById('endless-btn').style.display = won ? 'inline-block' : 'none';
   document.getElementById('overlay').classList.add('show');
   if (won) SFX.win(); else SFX.lose();
-  renderLeaderboard(loadScores(), null);
+  loadScores().then(scores =>
+    renderLeaderboard(document.getElementById('o-leaderboard'), scores, null));
 }
 
 function continueEndless() {
@@ -788,6 +827,9 @@ function setupInput() {
 
   window.addEventListener('keydown', e => {
     if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+    if (e.key === 'Escape' && document.getElementById('scores-modal').classList.contains('show')) {
+      hideHighScores(); return;
+    }
     if (!CURRENT_LEVEL) return;
     const k = e.key.toLowerCase();
     if (e.key === 'Escape') { cancelPlacement(); return; }
@@ -805,9 +847,28 @@ function setupInput() {
 // ────────────────────────────────────────────────────────────
 // INIT
 // ────────────────────────────────────────────────────────────
+// Match the backing store to the CSS size × devicePixelRatio so the
+// canvas stays crisp when the layout scales it up or down. All game
+// code keeps drawing in logical 840×600 coordinates via the transform.
+function fitCanvas() {
+  const rect = canvas.getBoundingClientRect();
+  if (!rect.width) return;
+  const dpr = window.devicePixelRatio || 1;
+  const scale = Math.min(rect.width * dpr / W, 2);   // cap fill cost at 2×
+  const bw = Math.round(W * scale), bh = Math.round(H * scale);
+  if (canvas.width !== bw || canvas.height !== bh) {
+    canvas.width = bw;
+    canvas.height = bh;
+  }
+  ctx.setTransform(scale, 0, 0, scale, 0, 0);
+}
+
 function init() {
   canvas = document.getElementById('game');
   ctx = canvas.getContext('2d');
+  fitCanvas();
+  window.addEventListener('resize', fitCanvas);
+  window.addEventListener('orientationchange', fitCanvas);
   setupInput();
   showLevelSelect();
   requestAnimationFrame(tick);

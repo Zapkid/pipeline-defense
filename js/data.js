@@ -148,7 +148,7 @@ const LEVELS = [
 ];
 
 // ────────────────────────────────────────────────────────────
-// ENDLESS MODE — procedural waves after the scripted ones
+// ENDLESS MODE: procedural waves after the scripted ones
 // n is the 1-based endless wave index
 // ────────────────────────────────────────────────────────────
 function genEndlessWave(n) {
