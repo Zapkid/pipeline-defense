@@ -397,7 +397,7 @@ function updateUI() {
 // SCORES_ENDPOINT is set (GET returns {scores:[...]}, POST accepts an
 // entry) it is used as the source of truth and fails soft to local.
 // ────────────────────────────────────────────────────────────
-const SCORES_ENDPOINT = null;
+const SCORES_ENDPOINT = null;   // deploy supabase/ and set the function URL here (see supabase/README.md)
 
 function localScores() {
   try { return JSON.parse(localStorage.getItem('pd_scores') || '[]'); } catch (e) { return []; }
