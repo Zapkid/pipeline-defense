@@ -52,6 +52,9 @@ window.addEventListener('load', () => {
         showOverlay(false);
         document.getElementById('o-name').value = '<img src=x onerror=alert(1)>';
         saveScore();
+        const hudOk = document.getElementById('mh-budget').textContent === String(Math.floor(state.budget))
+          && document.getElementById('mh-lives').textContent === String(state.lives);
+        log('mobileHudSync=' + hudOk);
         setTimeout(() => {
           const xssOk = !document.getElementById('o-leaderboard').innerHTML.includes('<img');
           log('xssEscaped=' + xssOk);
@@ -61,7 +64,7 @@ window.addEventListener('load', () => {
           log('highScoresModal=' + hsOk);
           log('errors=' + JSON.stringify(window.__errors));
           const pass = state.cleared >= 2 && state.lives > 0 && kills > 0 && rejected
-            && modeOk && upgradeOk && xssOk && hsOk && window.__errors.length === 0;
+            && modeOk && upgradeOk && xssOk && hsOk && hudOk && window.__errors.length === 0;
           log(pass ? 'TEST-PASS' : 'TEST-FAIL');
         }, 50);
       }

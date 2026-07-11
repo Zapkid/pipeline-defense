@@ -21,6 +21,7 @@ GitHub Pages). No build step, no dependencies.
 | Input | Action |
 |---|---|
 | Click empty cell | Place selected tower |
+| Tap empty cell (touch) | Preview placement; tap again to confirm |
 | Click tower | Inspect / upgrade / sell / change targeting |
 | Right-click / `Esc` | Cancel |
 | `Space` | Send wave (early call = cash bonus) |
@@ -53,6 +54,9 @@ in `js/main.js`; it falls back to local storage when unset or unreachable.
 - The layout is responsive: the board scales to fill the space between the side panels
   on desktop (capped to the viewport height) and stacks vertically on mobile. The canvas
   backing store follows `devicePixelRatio` so scaling stays crisp.
+- Mobile play uses its own chrome: a fixed bottom HUD (budget, lives, wave, send-wave),
+  a horizontal swipe strip for the tower shop, a floating bottom sheet for the tower
+  inspector, and two-tap placement (tap to preview, tap again to confirm).
 
 ## Project layout
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Pipeline Defense</title>
 <meta name="description" content="QA tower defense: place test layers along the CI/CD pipeline and stop bugs from reaching production.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐛</text></svg>">
@@ -37,68 +37,68 @@
 
     <div class="shop-section-label">UNIT &amp; BROWSER</div>
     <button class="tower-btn" id="btn-unit" onclick="selectTower('unit')">
-      <div style="color:#22c55e">🧪 Unit Test <kbd>1</kbd></div>
-      <div class="btn-cost">$50 &middot; Fast fire &middot; Short range</div>
+      <div style="color:#22c55e"><span class="t-ico">🧪</span><span class="t-name"> Unit Test</span> <kbd>1</kbd></div>
+      <div class="btn-cost"><span class="cost-v">$50</span><span class="cost-rest"> &middot; Fast fire &middot; Short range</span></div>
       <div class="btn-desc">Destroys off-by-one bugs (x3 dmg)</div>
     </button>
     <button class="tower-btn" id="btn-cypress" onclick="selectTower('cypress')">
-      <div style="color:#69d3a7">🌲 Cypress <kbd>2</kbd></div>
-      <div class="btn-cost">$200 &middot; Fast &middot; Short-mid range</div>
+      <div style="color:#69d3a7"><span class="t-ico">🌲</span><span class="t-name"> Cypress</span> <kbd>2</kbd></div>
+      <div class="btn-cost"><span class="cost-v">$200</span><span class="cost-rest"> &middot; Fast &middot; Short-mid range</span></div>
       <div class="btn-desc">Retries flaky misses. Strong vs unit/interface.</div>
     </button>
     <button class="tower-btn" id="btn-selenium" onclick="selectTower('selenium')">
-      <div style="color:#f97316">Se Selenium <kbd>3</kbd></div>
-      <div class="btn-cost">$250 &middot; Slow &middot; Mid range</div>
+      <div style="color:#f97316"><span class="t-ico t-ico-txt">Se</span><span class="t-name"> Selenium</span> <kbd>3</kbd></div>
+      <div class="btn-cost"><span class="cost-v">$250</span><span class="cost-rest"> &middot; Slow &middot; Mid range</span></div>
       <div class="btn-desc">Interface specialist. High flakiness, retryable.</div>
     </button>
     <button class="tower-btn" id="btn-playwright" onclick="selectTower('playwright')">
-      <div style="color:#2dd4bf">🎭 Playwright <kbd>4</kbd></div>
-      <div class="btn-cost">$350 &middot; Parallel &middot; Mid range</div>
+      <div style="color:#2dd4bf"><span class="t-ico">🎭</span><span class="t-name"> Playwright</span> <kbd>4</kbd></div>
+      <div class="btn-cost"><span class="cost-v">$350</span><span class="cost-rest"> &middot; Parallel &middot; Mid range</span></div>
       <div class="btn-desc">Fires at 2 targets simultaneously.</div>
     </button>
 
     <div class="shop-section-label">API &amp; INTEGRATION</div>
     <button class="tower-btn" id="btn-postman" onclick="selectTower('postman')">
-      <div style="color:#FF6C37">📮 Postman <kbd>5</kbd></div>
-      <div class="btn-cost">$180 &middot; Fast &middot; Short-mid range</div>
+      <div style="color:#FF6C37"><span class="t-ico">📮</span><span class="t-name"> Postman</span> <kbd>5</kbd></div>
+      <div class="btn-cost"><span class="cost-v">$180</span><span class="cost-rest"> &middot; Fast &middot; Short-mid range</span></div>
       <div class="btn-desc">Best vs floating point and silent failure bugs.</div>
     </button>
     <button class="tower-btn" id="btn-integration" onclick="selectTower('integration')">
-      <div style="color:#3b82f6">🔗 Integration <kbd>6</kbd></div>
-      <div class="btn-cost">$150 &middot; Medium &middot; Mid range</div>
+      <div style="color:#3b82f6"><span class="t-ico">🔗</span><span class="t-name"> Integration</span> <kbd>6</kbd></div>
+      <div class="btn-cost"><span class="cost-v">$150</span><span class="cost-rest"> &middot; Medium &middot; Mid range</span></div>
       <div class="btn-desc">Best against floating point and permission bugs.</div>
     </button>
     <button class="tower-btn" id="btn-db" onclick="selectTower('db')">
-      <div style="color:#a16207">🗄 DB Test <kbd>7</kbd></div>
-      <div class="btn-cost">$280 &middot; Slow &middot; Short range</div>
+      <div style="color:#a16207"><span class="t-ico">🗄</span><span class="t-name"> DB Test</span> <kbd>7</kbd></div>
+      <div class="btn-cost"><span class="cost-v">$280</span><span class="cost-rest"> &middot; Slow &middot; Short range</span></div>
       <div class="btn-desc">Destroys race condition and state mutation bugs.</div>
     </button>
 
     <div class="shop-section-label">ADVANCED</div>
     <button class="tower-btn" id="btn-e2e" onclick="selectTower('e2e')">
-      <div style="color:#f59e0b">🔄 E2E Test <kbd>8</kbd></div>
-      <div class="btn-cost">$300 &middot; Slow &middot; Long range &middot; SPLASH</div>
+      <div style="color:#f59e0b"><span class="t-ico">🔄</span><span class="t-name"> E2E Test</span> <kbd>8</kbd></div>
+      <div class="btn-cost"><span class="cost-v">$300</span><span class="cost-rest"> &middot; Slow &middot; Long range &middot; SPLASH</span></div>
       <div class="btn-desc">Handles race conditions. AOE splash + slows.</div>
     </button>
     <button class="tower-btn" id="btn-docker" onclick="selectTower('docker')">
-      <div style="color:#0ea5e9">🐳 Docker <kbd>9</kbd></div>
-      <div class="btn-cost">$450 &middot; Freeze &middot; Mid range</div>
+      <div style="color:#0ea5e9"><span class="t-ico">🐳</span><span class="t-name"> Docker</span> <kbd>9</kbd></div>
+      <div class="btn-cost"><span class="cost-v">$450</span><span class="cost-rest"> &middot; Freeze &middot; Mid range</span></div>
       <div class="btn-desc">Isolates bugs for 2s. Destroys permission esc.</div>
     </button>
     <button class="tower-btn" id="btn-perf" onclick="selectTower('perf')">
-      <div style="color:#ec4899">⚡ Perf Test <kbd>0</kbd></div>
-      <div class="btn-cost">$400 &middot; Slow &middot; Long range &middot; SPLASH</div>
+      <div style="color:#ec4899"><span class="t-ico">⚡</span><span class="t-name"> Perf Test</span> <kbd>0</kbd></div>
+      <div class="btn-cost"><span class="cost-v">$400</span><span class="cost-rest"> &middot; Slow &middot; Long range &middot; SPLASH</span></div>
       <div class="btn-desc">AOE damage. Best vs boss and megaboss.</div>
     </button>
     <button class="tower-btn" id="btn-ai" onclick="selectTower('ai')">
-      <div style="color:#a855f7">🤖 AI Assertion <kbd>A</kbd></div>
-      <div class="btn-cost">$500 &middot; Smart &middot; Max range</div>
+      <div style="color:#a855f7"><span class="t-ico">🤖</span><span class="t-name"> AI Assertion</span> <kbd>A</kbd></div>
+      <div class="btn-cost"><span class="cost-v">$500</span><span class="cost-rest"> &middot; Smart &middot; Max range</span></div>
       <div class="btn-desc">Catches timezone and silent failure bugs.</div>
     </button>
 
     <hr class="divider">
-    <button id="triage-btn" onclick="runTriage()">AI Triage ($200) <kbd>T</kbd></button>
-    <div style="font-size:0.58rem;color:#374151;margin-top:4px">Active ability: scans all towers and cuts flakiness by 60. Stacks with each use. Run when red bars appear.</div>
+    <button id="triage-btn" onclick="runTriage()"><span class="tri-full">AI Triage ($200) <kbd>T</kbd></span><span class="tri-short">🩺 Triage<br>$200</span></button>
+    <div class="shop-note" style="font-size:0.58rem;color:#374151;margin-top:4px">Active ability: scans all towers and cuts flakiness by 60. Stacks with each use. Run when red bars appear.</div>
     <hr class="divider mobile-hide">
     <div class="mobile-hide" style="font-size:0.6rem;color:#4b5563;margin-bottom:5px">BUG TYPES</div>
     <div class="legend-item mobile-hide"><div class="ldot" style="background:#ef4444"></div>+-1 Off-by-one: fast, fragile</div>
@@ -178,11 +178,21 @@
       <div id="ti-name" style="font-size:0.72rem;font-weight:bold;margin-bottom:2px"></div>
       <div id="ti-level" style="font-size:0.6rem;color:#4b5563;margin-bottom:6px"></div>
       <div id="ti-stats" style="font-size:0.6rem;color:#6b7280;line-height:1.8;margin-bottom:8px"></div>
-      <button class="btn-target" id="ti-target-btn" onclick="cycleTargetMode()">TARGET: FIRST</button>
-      <button class="btn-upgrade" id="ti-upgrade-btn" onclick="upgradeTower()"></button>
-      <button class="btn-sell" id="ti-sell-btn" onclick="sellTower()"></button>
+      <div class="ti-actions">
+        <button class="btn-target" id="ti-target-btn" onclick="cycleTargetMode()">TARGET: FIRST</button>
+        <button class="btn-upgrade" id="ti-upgrade-btn" onclick="upgradeTower()"></button>
+        <button class="btn-sell" id="ti-sell-btn" onclick="sellTower()"></button>
+      </div>
     </div>
   </div>
+</div>
+
+<!-- Mobile HUD (fixed bottom bar, shown on small screens only) -->
+<div id="mobile-hud">
+  <div class="mh-stat"><span class="mh-l">$</span><span id="mh-budget">0</span></div>
+  <div class="mh-stat"><span class="mh-l">♥</span><span id="mh-lives">0</span></div>
+  <div class="mh-stat"><span class="mh-l">W</span><span id="mh-wave">0/0</span></div>
+  <button id="mh-wave-btn" onclick="startWave()">&#9654; WAVE</button>
 </div>
 
 <!-- Game Over / Win Overlay -->

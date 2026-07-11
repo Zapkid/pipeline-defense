@@ -170,6 +170,7 @@ function selectTower(type) {
   if (!CURRENT_LEVEL || state.gameOver || state.gameWon) return;
   const cost = TOWER_DEF[type].cost;
   if (state.budget < cost) { setMsg(`Need $${cost} for ${TOWER_DEF[type].name}. Have $${Math.floor(state.budget)}.`); return; }
+  touchPendingCell = null;
   state.placing = state.placing === type ? null : type;
   state.selectedTower = null; hideTowerInfo();
   document.querySelectorAll('.tower-btn').forEach(b => b.classList.remove('selected'));
@@ -362,22 +363,33 @@ function updateUI() {
   });
   document.getElementById('triage-btn').disabled = state.budget < TRIAGE_COST;
 
-  // wave button
+  // wave button (full label + short label for the mobile HUD)
   const wb = document.getElementById('wave-btn');
+  let wbDisabled, wbLabel, wbShort;
   if (!CURRENT_LEVEL || state.gameOver || state.gameWon) {
-    wb.disabled = true; wb.textContent = '▶ SEND WAVE';
+    wbDisabled = true; wbLabel = '▶ SEND WAVE'; wbShort = '▶ WAVE';
   } else if (state.waveActive) {
-    wb.disabled = true; wb.textContent = 'WAVE INCOMING…';
+    wbDisabled = true; wbLabel = 'WAVE INCOMING…'; wbShort = 'INCOMING…';
   } else if (!hasNextWave()) {
-    wb.disabled = true; wb.textContent = 'FINAL WAVE ACTIVE';
+    wbDisabled = true; wbLabel = 'FINAL WAVE ACTIVE'; wbShort = 'FINAL WAVE';
   } else if (state.bugs.length > 0) {
-    wb.disabled = false; wb.textContent = `⏩ EARLY WAVE (+$${40 + (state.wave + 1) * 8})`;
+    const b = 40 + (state.wave + 1) * 8;
+    wbDisabled = false; wbLabel = `⏩ EARLY WAVE (+$${b})`; wbShort = `⏩ +$${b}`;
   } else if (state.autoWaveAt != null) {
-    wb.disabled = false;
-    wb.textContent = `▶ AUTO IN ${Math.max(0, Math.ceil(state.autoWaveAt - state.now))}s`;
+    const s = Math.max(0, Math.ceil(state.autoWaveAt - state.now));
+    wbDisabled = false; wbLabel = `▶ AUTO IN ${s}s`; wbShort = `▶ ${s}s`;
   } else {
-    wb.disabled = false; wb.textContent = '▶ SEND WAVE';
+    wbDisabled = false; wbLabel = '▶ SEND WAVE'; wbShort = '▶ WAVE';
   }
+  wb.disabled = wbDisabled; wb.textContent = wbLabel;
+
+  // mobile HUD
+  document.getElementById('mh-budget').textContent = Math.floor(state.budget);
+  document.getElementById('mh-lives').textContent = state.lives;
+  document.getElementById('mh-wave').textContent = state.endless
+    ? `${state.wave}∞` : `${state.wave}/${WAVE_DEFS.length}`;
+  const mwb = document.getElementById('mh-wave-btn');
+  mwb.disabled = wbDisabled; mwb.textContent = wbShort;
 
   // toolbar
   document.getElementById('btn-pause').textContent = state.paused ? '▶ RESUME' : '⏸ PAUSE';
@@ -780,6 +792,7 @@ function getCanvasCell(clientX, clientY) {
 }
 
 function cancelPlacement() {
+  touchPendingCell = null;
   if (state.placing) {
     state.placing = null;
     document.querySelectorAll('.tower-btn').forEach(b => b.classList.remove('selected'));
@@ -788,6 +801,10 @@ function cancelPlacement() {
     state.selectedTower = null; hideTowerInfo();
   }
 }
+
+// Touch placement is two-step: first tap previews the cell and range,
+// second tap on the same cell confirms. Mouse placement stays one click.
+let touchPendingCell = null;
 
 function setupInput() {
   canvas.addEventListener('click', e => {
@@ -813,9 +830,21 @@ function setupInput() {
     e.preventDefault();
     const t = e.changedTouches[0];
     const { col, row } = getCanvasCell(t.clientX, t.clientY);
-    if (state.placing) placeTower(col, row);
-    else selectPlacedTower(col, row);
-    state.hoveredCell = null;
+    if (state.placing) {
+      if (touchPendingCell && touchPendingCell.col === col && touchPendingCell.row === row) {
+        touchPendingCell = null;
+        placeTower(col, row);
+        state.hoveredCell = null;
+      } else {
+        touchPendingCell = { col, row };
+        state.hoveredCell = { col, row };   // keeps the preview tile + range visible
+        setMsg('Tap the same cell again to confirm placement.');
+      }
+    } else {
+      touchPendingCell = null;
+      selectPlacedTower(col, row);
+      state.hoveredCell = null;
+    }
   }, { passive: false });
   canvas.addEventListener('contextmenu', e => {
     e.preventDefault();
