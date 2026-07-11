@@ -147,9 +147,6 @@ button { touch-action: manipulation; }
   .stat-row { font-size: 0.78rem; }
   .tb-btn { flex: 1; padding: 11px 4px; }
 
-  .level-card { width: 100%; max-width: 340px; padding: 16px; }
-  .lc-sub { margin-bottom: 10px; }
-  .lc-best { margin-top: 8px; padding-top: 8px; }
 }
 
 canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
@@ -396,9 +393,16 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
   transition: border-color 0.15s, transform 0.15s;
 }
 .level-card:hover { transform: translateY(-3px); }
-.lc-name { font-size: 1rem; font-weight: bold; letter-spacing: 2px; margin-bottom: 6px; }
+.lc-head { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px; }
+.lc-name { font-size: 1rem; font-weight: bold; letter-spacing: 2px; }
+.lc-diff {
+  font-size: 0.55rem; letter-spacing: 1px;
+  border: 1px solid; border-radius: 3px; padding: 1px 6px;
+}
 .lc-sub { font-size: 0.6rem; color: #4b5563; line-height: 1.5; margin-bottom: 14px; }
 .lc-stats { font-size: 0.62rem; color: #6b7280; line-height: 1.8; }
+.lc-stats span { display: inline-block; white-space: nowrap; }
+.lc-stats span:not(:last-child)::after { content: '\00b7'; color: #374151; margin: 0 5px; }
 .lc-best { font-size: 0.6rem; color: #fbbf24; margin-top: 12px; padding-top: 10px; border-top: 1px solid #1e293b; }
 .lc-won { color: #22c55e; }
 #ls-scores-btn {
@@ -442,6 +446,24 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
   padding: 9px; cursor: pointer; border-radius: 4px; width: 100%;
 }
 #hs-close-btn:hover { background: #334155; }
+
+/* level select becomes a compact list on phones: all levels on one screen.
+   Kept after the base level-select rules so these overrides win the cascade. */
+@media (max-width: 640px) {
+  #level-select { justify-content: flex-start; padding: 26px 14px; }
+  #level-select h2 { font-size: 1.15rem; }
+  .ls-sub { margin-bottom: 14px; }
+  .level-cards { gap: 8px; width: 100%; max-width: 420px; flex-direction: column; flex-wrap: nowrap; }
+  .level-card { width: 100%; padding: 12px 14px; text-align: left; }
+  .level-card:hover { transform: none; }
+  .lc-head { justify-content: space-between; margin-bottom: 4px; }
+  .lc-name { font-size: 0.85rem; }
+  .lc-sub { display: none; }
+  .lc-stats { font-size: 0.62rem; line-height: 1.5; }
+  .lc-best { margin-top: 6px; padding-top: 6px; font-size: 0.6rem; }
+  #ls-scores-btn { margin-top: 14px; width: 100%; max-width: 420px; padding: 13px; }
+  .sm-box { padding: 18px 14px; }
+}
 
 @media (min-width: 1201px) {
   body { padding: 22px 28px; }

@@ -79,10 +79,12 @@ function renderLevelCards() {
       : 'Not attempted';
     return `
       <div class="level-card" style="border-color:${lv.theme}" onclick="chooseLevel(${lv.id})">
-        <div class="lc-name" style="color:${lv.theme}">${lv.name}</div>
+        <div class="lc-head">
+          <span class="lc-name" style="color:${lv.theme}">${lv.name}</span>
+          <span class="lc-diff" style="color:${lv.theme};border-color:${lv.theme}">${lv.difficulty}</span>
+        </div>
         <div class="lc-sub">${lv.subtitle}</div>
-        <div class="lc-stats">Budget: $${lv.budget} &middot; Lives: ${lv.lives}<br>
-          Waves: ${lv.waves.length}<br>Difficulty: ${lv.difficulty}</div>
+        <div class="lc-stats"><span>Budget: $${lv.budget}</span><span>Lives: ${lv.lives}</span><span>Waves: ${lv.waves.length}</span></div>
         <div class="lc-best">${best}</div>
       </div>`;
   }).join('');
