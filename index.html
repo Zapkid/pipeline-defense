@@ -128,6 +128,9 @@
       <button class="tb-btn" id="btn-auto" onclick="toggleAutoWave()">AUTO-WAVE: OFF</button>
       <button class="tb-btn" id="btn-sound" onclick="toggleMute()">🔊 SOUND</button>
     </div>
+    <canvas id="game" width="840" height="600"></canvas>
+    <div id="msg-bar">Choose a level to begin.</div>
+    <!-- kept below the board so toggling it never shifts the board's position -->
     <div id="shop-info" style="display:none">
       <span class="si-ico" id="si-ico"></span>
       <div class="si-body">
@@ -136,8 +139,6 @@
         <div id="si-stats"></div>
       </div>
     </div>
-    <canvas id="game" width="840" height="600"></canvas>
-    <div id="msg-bar">Choose a level to begin.</div>
   </div>
 
   <!-- RIGHT: Stats -->

@@ -20,7 +20,7 @@ GitHub Pages). No build step, no dependencies.
 
 | Input | Action |
 |---|---|
-| Select a tower in the shop | Shows its full details (cost, range, rate, specials, strengths) above the board, or as a bottom sheet on mobile |
+| Select a tower in the shop | Shows its full details (cost, range, rate, specials, strengths) below the board, or as a bottom sheet on mobile |
 | Click empty cell | Place selected tower |
 | Tap empty cell (touch) | Preview placement; tap again to confirm |
 | Click tower | Inspect / upgrade / sell / change targeting |

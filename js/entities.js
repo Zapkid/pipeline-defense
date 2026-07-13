@@ -106,7 +106,7 @@ class Bug {
 
     // label
     if (this.label) {
-      const fs = this.size > 12 ? 9 : 7;
+      const fs = this.size > 12 ? 10 : 8;
       ctx.fillStyle = 'rgba(255,255,255,0.92)';
       ctx.font = `bold ${fs}px sans-serif`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -226,7 +226,7 @@ class Tower {
     }
     if (this.level > 1) {
       ctx.fillStyle = this.level === 3 ? '#fbbf24' : '#60a5fa';
-      ctx.font = 'bold 9px monospace';
+      ctx.font = 'bold 10px monospace';
       ctx.textAlign = 'right'; ctx.textBaseline = 'top';
       ctx.fillText(`L${this.level}`, this.x + s - 1, this.y - s + 1);
     }
@@ -330,7 +330,7 @@ class TextParticle {
   draw(ctx) {
     if (this.life <= 0) return;
     ctx.globalAlpha = Math.max(0, this.life);
-    ctx.fillStyle = this.color; ctx.font = 'bold 11px Courier New';
+    ctx.fillStyle = this.color; ctx.font = 'bold 13px Courier New';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(this.text, this.x, this.y);
     ctx.globalAlpha = 1;

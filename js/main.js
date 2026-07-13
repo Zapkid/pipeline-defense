@@ -736,10 +736,10 @@ function drawPath() {
     ctx.restore();
 
     const lx = p.x + g.lx, ly = p.y + g.ly;
-    ctx.font = 'bold 9px Courier New';
+    ctx.font = 'bold 11px Courier New';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     const tw = ctx.measureText(g.name).width;
-    const ph = 14, pw = tw + 14;
+    const ph = 17, pw = tw + 16;
     ctx.fillStyle = `rgba(${rgb},0.18)`;
     ctx.beginPath(); ctx.roundRect(lx - pw/2, ly - ph/2, pw, ph, 5); ctx.fill();
     ctx.strokeStyle = `rgba(${rgb},0.6)`; ctx.lineWidth = 1;
@@ -748,12 +748,12 @@ function drawPath() {
     ctx.fillText(g.name, lx, ly);
   }
 
-  ctx.font = 'bold 9px Courier New'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = 'bold 11px Courier New'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillStyle = '#ef4444';
-  ctx.fillText('GIT', 22, PATH_PX[0].y - 16);
-  ctx.fillText('PUSH', 22, PATH_PX[0].y - 4);
+  ctx.fillText('GIT', 24, PATH_PX[0].y - 19);
+  ctx.fillText('PUSH', 24, PATH_PX[0].y - 5);
   ctx.fillStyle = '#22c55e';
-  ctx.fillText('PROD', W - 28, PATH_PX[PATH_PX.length - 1].y - 14);
+  ctx.fillText('PROD', W - 30, PATH_PX[PATH_PX.length - 1].y - 16);
 }
 
 function drawHoverPreview() {
@@ -928,7 +928,7 @@ function fitCanvas() {
   const rect = canvas.getBoundingClientRect();
   if (!rect.width) return;
   const dpr = window.devicePixelRatio || 1;
-  const scale = Math.min(rect.width * dpr / W, 2);   // cap fill cost at 2×
+  const scale = Math.min(rect.width * dpr / W, 3);   // cap fill cost at 3×
   const bw = Math.round(W * scale), bh = Math.round(H * scale);
   if (canvas.width !== bw || canvas.height !== bh) {
     canvas.width = bw;

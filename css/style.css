@@ -168,7 +168,7 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
   border: 1px solid #334155;
   border-radius: 6px;
   padding: 8px 12px;
-  margin-bottom: 6px;
+  margin-top: 6px;
 }
 .si-ico { line-height: 0; flex-shrink: 0; }
 .si-body { min-width: 0; }
@@ -491,7 +491,7 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
     left: 8px; right: 8px;
     bottom: calc(66px + env(safe-area-inset-bottom));
     z-index: 90;
-    margin-bottom: 0;
+    margin-top: 0;
     box-shadow: 0 -6px 24px rgba(0,0,0,0.55);
   }
 }
@@ -510,33 +510,33 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
   }
   #toolbar { justify-content: center; }
   #msg-bar { text-align: center; }
-  .panel { width: 250px; flex: 0 0 250px; padding: 16px 15px; }
-  .panel h3 { font-size: 0.8rem; margin-bottom: 10px; padding-bottom: 6px; }
-  .shop-section-label { font-size: 0.68rem; margin: 10px 0 5px; }
-  .tower-btn { font-size: 0.84rem; padding: 10px 12px; margin-bottom: 8px; }
-  .btn-cost { font-size: 0.73rem; margin-top: 2px; }
-  .btn-desc { font-size: 0.71rem; margin-top: 2px; }
-  kbd { font-size: 0.62rem; }
-  .stat-row { font-size: 0.92rem; margin-bottom: 10px; }
-  .legend-item { font-size: 0.72rem; margin-bottom: 5px; }
-  .ldot { width: 9px; height: 9px; }
-  .info-text { font-size: 0.74rem; line-height: 1.7; }
-  #wave-btn { font-size: 0.9rem; padding: 12px; margin-top: 8px; }
-  #triage-btn { font-size: 0.78rem; padding: 10px; margin-top: 8px; }
-  .shop-note { font-size: 0.66rem !important; }
-  #msg-bar { font-size: 0.85rem; min-height: 24px; margin-top: 10px; }
-  .tb-btn { font-size: 0.76rem; padding: 8px 16px; }
-  .pv-chip { font-size: 0.7rem; padding: 3px 7px; }
-  .pv-chip i { width: 8px; height: 8px; }
-  .t-ico svg { width: 17px; height: 17px; }
-  #si-name { font-size: 0.9rem; }
-  #si-cost { font-size: 0.8rem; }
-  #si-desc { font-size: 0.78rem; }
-  #si-stats { font-size: 0.72rem; }
-  #ti-name { font-size: 0.85rem !important; }
-  #ti-level { font-size: 0.72rem !important; }
-  #ti-stats { font-size: 0.72rem !important; }
-  .btn-target, .btn-upgrade, .btn-sell { font-size: 0.73rem; padding: 8px; }
+  .panel { width: 270px; flex: 0 0 270px; padding: 17px 16px; }
+  .panel h3 { font-size: 0.86rem; margin-bottom: 11px; padding-bottom: 7px; }
+  .shop-section-label { font-size: 0.72rem; margin: 11px 0 6px; }
+  .tower-btn { font-size: 0.9rem; padding: 11px 13px; margin-bottom: 9px; }
+  .btn-cost { font-size: 0.78rem; margin-top: 2px; }
+  .btn-desc { font-size: 0.76rem; margin-top: 3px; }
+  kbd { font-size: 0.66rem; }
+  .stat-row { font-size: 1rem; margin-bottom: 11px; }
+  .legend-item { font-size: 0.78rem; margin-bottom: 6px; }
+  .ldot { width: 10px; height: 10px; }
+  .info-text { font-size: 0.8rem; line-height: 1.7; }
+  #wave-btn { font-size: 0.95rem; padding: 13px; margin-top: 8px; }
+  #triage-btn { font-size: 0.84rem; padding: 11px; margin-top: 8px; }
+  .shop-note { font-size: 0.72rem !important; }
+  #msg-bar { font-size: 0.95rem; min-height: 26px; margin-top: 10px; }
+  .tb-btn { font-size: 0.82rem; padding: 9px 18px; }
+  .pv-chip { font-size: 0.76rem; padding: 4px 8px; }
+  .pv-chip i { width: 9px; height: 9px; }
+  .t-ico svg { width: 19px; height: 19px; }
+  #si-name { font-size: 1rem; }
+  #si-cost { font-size: 0.88rem; }
+  #si-desc { font-size: 0.85rem; }
+  #si-stats { font-size: 0.78rem; }
+  #ti-name { font-size: 0.95rem !important; }
+  #ti-level { font-size: 0.78rem !important; }
+  #ti-stats { font-size: 0.78rem !important; }
+  .btn-target, .btn-upgrade, .btn-sell { font-size: 0.78rem; padding: 9px; }
   canvas { border: 1px solid #334155; box-shadow: 0 0 24px rgba(34,197,94,0.06); }
   .level-card { width: 230px; padding: 28px 24px; }
   .lc-name { font-size: 1.1rem; }
