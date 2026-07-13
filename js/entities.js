@@ -208,12 +208,18 @@ class Tower {
     ctx.fillStyle = '#111827';
     ctx.strokeStyle = selected ? '#ffffff' : this.color; ctx.lineWidth = selected ? 2.5 : 2;
     ctx.beginPath(); ctx.rect(this.x - s, this.y - s, s*2, s*2); ctx.fill(); ctx.stroke();
-    if (this.icon === 'Se') {
+    const iconPath = typeof getIconPath2D === 'function' ? getIconPath2D(this.type) : null;
+    if (iconPath) {
+      const isz = s * 1.5;
+      ctx.save();
+      ctx.translate(this.x - isz / 2, this.y - isz / 2);
+      ctx.scale(isz / 24, isz / 24);
       ctx.fillStyle = this.color;
-      ctx.font = `bold ${Math.round(s * 0.85)}px monospace`;
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(this.icon, this.x, this.y + 1);
+      ctx.fill(iconPath, ICON_PATHS[this.type].fr);
+      ctx.restore();
     } else {
+      // fallback for browsers without Path2D
+      ctx.fillStyle = this.color;
       ctx.font = `${Math.round(s * 1.35)}px sans-serif`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(this.icon, this.x, this.y + 2);

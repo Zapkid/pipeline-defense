@@ -1,6 +1,6 @@
 # CLAUDE.md: working agreement for this repo
 
-Pipeline Defense: QA-themed tower defense game. Zero-dependency static site: vanilla JS + canvas, classic script tags in load order, no build step, no package.json. Deployed as-is to Vercel. Layout: `index.html` (markup), `css/style.css`, `js/data.js` (towers/bugs/levels/waves), `js/audio.js` (WebAudio SFX), `js/entities.js` (Bug/Tower/Projectile/particles), `js/main.js` (state, loop, render, input, UI). Read `README.md` before non-trivial work.
+Pipeline Defense: QA-themed tower defense game. Zero-dependency static site: vanilla JS + canvas, classic script tags in load order, no build step, no package.json. Deployed as-is to Vercel. Layout: `index.html` (markup), `css/style.css`, `js/data.js` (towers/bugs/levels/waves), `js/icons.js` (SVG icon paths), `js/audio.js` (WebAudio SFX), `js/entities.js` (Bug/Tower/Projectile/particles), `js/main.js` (state, loop, render, input, UI). Read `README.md` before non-trivial work.
 
 ## Documentation is part of "done"
 

@@ -37,61 +37,61 @@
 
     <div class="shop-section-label">UNIT &amp; BROWSER</div>
     <button class="tower-btn" id="btn-unit" onclick="selectTower('unit')">
-      <div style="color:#22c55e"><span class="t-ico">🧪</span><span class="t-name"> Unit Test</span> <kbd>1</kbd></div>
+      <div style="color:#22c55e"><span class="t-ico" data-icon="unit"></span><span class="t-name"> Unit Test</span> <kbd>1</kbd></div>
       <div class="btn-cost"><span class="cost-v">$50</span><span class="cost-rest"> &middot; Fast fire &middot; Short range</span></div>
       <div class="btn-desc">Destroys off-by-one bugs (x3 dmg)</div>
     </button>
     <button class="tower-btn" id="btn-cypress" onclick="selectTower('cypress')">
-      <div style="color:#69d3a7"><span class="t-ico">🌲</span><span class="t-name"> Cypress</span> <kbd>2</kbd></div>
+      <div style="color:#69d3a7"><span class="t-ico" data-icon="cypress"></span><span class="t-name"> Cypress</span> <kbd>2</kbd></div>
       <div class="btn-cost"><span class="cost-v">$200</span><span class="cost-rest"> &middot; Fast &middot; Short-mid range</span></div>
       <div class="btn-desc">Retries flaky misses. Strong vs unit/interface.</div>
     </button>
     <button class="tower-btn" id="btn-selenium" onclick="selectTower('selenium')">
-      <div style="color:#f97316"><span class="t-ico t-ico-txt">Se</span><span class="t-name"> Selenium</span> <kbd>3</kbd></div>
+      <div style="color:#f97316"><span class="t-ico" data-icon="selenium"></span><span class="t-name"> Selenium</span> <kbd>3</kbd></div>
       <div class="btn-cost"><span class="cost-v">$250</span><span class="cost-rest"> &middot; Slow &middot; Mid range</span></div>
       <div class="btn-desc">Interface specialist. High flakiness, retryable.</div>
     </button>
     <button class="tower-btn" id="btn-playwright" onclick="selectTower('playwright')">
-      <div style="color:#2dd4bf"><span class="t-ico">🎭</span><span class="t-name"> Playwright</span> <kbd>4</kbd></div>
+      <div style="color:#2dd4bf"><span class="t-ico" data-icon="playwright"></span><span class="t-name"> Playwright</span> <kbd>4</kbd></div>
       <div class="btn-cost"><span class="cost-v">$350</span><span class="cost-rest"> &middot; Parallel &middot; Mid range</span></div>
       <div class="btn-desc">Fires at 2 targets simultaneously.</div>
     </button>
 
     <div class="shop-section-label">API &amp; INTEGRATION</div>
     <button class="tower-btn" id="btn-postman" onclick="selectTower('postman')">
-      <div style="color:#FF6C37"><span class="t-ico">📮</span><span class="t-name"> Postman</span> <kbd>5</kbd></div>
+      <div style="color:#FF6C37"><span class="t-ico" data-icon="postman"></span><span class="t-name"> Postman</span> <kbd>5</kbd></div>
       <div class="btn-cost"><span class="cost-v">$180</span><span class="cost-rest"> &middot; Fast &middot; Short-mid range</span></div>
       <div class="btn-desc">Best vs floating point and silent failure bugs.</div>
     </button>
     <button class="tower-btn" id="btn-integration" onclick="selectTower('integration')">
-      <div style="color:#3b82f6"><span class="t-ico">🔗</span><span class="t-name"> Integration</span> <kbd>6</kbd></div>
+      <div style="color:#3b82f6"><span class="t-ico" data-icon="integration"></span><span class="t-name"> Integration</span> <kbd>6</kbd></div>
       <div class="btn-cost"><span class="cost-v">$150</span><span class="cost-rest"> &middot; Medium &middot; Mid range</span></div>
       <div class="btn-desc">Best against floating point and permission bugs.</div>
     </button>
     <button class="tower-btn" id="btn-db" onclick="selectTower('db')">
-      <div style="color:#a16207"><span class="t-ico">🗄</span><span class="t-name"> DB Test</span> <kbd>7</kbd></div>
+      <div style="color:#a16207"><span class="t-ico" data-icon="db"></span><span class="t-name"> DB Test</span> <kbd>7</kbd></div>
       <div class="btn-cost"><span class="cost-v">$280</span><span class="cost-rest"> &middot; Slow &middot; Short range</span></div>
       <div class="btn-desc">Destroys race condition and state mutation bugs.</div>
     </button>
 
     <div class="shop-section-label">ADVANCED</div>
     <button class="tower-btn" id="btn-e2e" onclick="selectTower('e2e')">
-      <div style="color:#f59e0b"><span class="t-ico">🔄</span><span class="t-name"> E2E Test</span> <kbd>8</kbd></div>
+      <div style="color:#f59e0b"><span class="t-ico" data-icon="e2e"></span><span class="t-name"> E2E Test</span> <kbd>8</kbd></div>
       <div class="btn-cost"><span class="cost-v">$300</span><span class="cost-rest"> &middot; Slow &middot; Long range &middot; SPLASH</span></div>
       <div class="btn-desc">Handles race conditions. AOE splash + slows.</div>
     </button>
     <button class="tower-btn" id="btn-docker" onclick="selectTower('docker')">
-      <div style="color:#0ea5e9"><span class="t-ico">🐳</span><span class="t-name"> Docker</span> <kbd>9</kbd></div>
+      <div style="color:#0ea5e9"><span class="t-ico" data-icon="docker"></span><span class="t-name"> Docker</span> <kbd>9</kbd></div>
       <div class="btn-cost"><span class="cost-v">$450</span><span class="cost-rest"> &middot; Freeze &middot; Mid range</span></div>
       <div class="btn-desc">Isolates bugs for 2s. Destroys permission esc.</div>
     </button>
     <button class="tower-btn" id="btn-perf" onclick="selectTower('perf')">
-      <div style="color:#ec4899"><span class="t-ico">⚡</span><span class="t-name"> Perf Test</span> <kbd>0</kbd></div>
+      <div style="color:#ec4899"><span class="t-ico" data-icon="perf"></span><span class="t-name"> Perf Test</span> <kbd>0</kbd></div>
       <div class="btn-cost"><span class="cost-v">$400</span><span class="cost-rest"> &middot; Slow &middot; Long range &middot; SPLASH</span></div>
       <div class="btn-desc">AOE damage. Best vs boss and megaboss.</div>
     </button>
     <button class="tower-btn" id="btn-ai" onclick="selectTower('ai')">
-      <div style="color:#a855f7"><span class="t-ico">🤖</span><span class="t-name"> AI Assertion</span> <kbd>A</kbd></div>
+      <div style="color:#a855f7"><span class="t-ico" data-icon="ai"></span><span class="t-name"> AI Assertion</span> <kbd>A</kbd></div>
       <div class="btn-cost"><span class="cost-v">$500</span><span class="cost-rest"> &middot; Smart &middot; Max range</span></div>
       <div class="btn-desc">Catches timezone and silent failure bugs.</div>
     </button>
@@ -127,6 +127,14 @@
       <button class="tb-btn" id="btn-speed" onclick="cycleSpeed()">1× SPEED</button>
       <button class="tb-btn" id="btn-auto" onclick="toggleAutoWave()">AUTO-WAVE: OFF</button>
       <button class="tb-btn" id="btn-sound" onclick="toggleMute()">🔊 SOUND</button>
+    </div>
+    <div id="shop-info" style="display:none">
+      <span class="si-ico" id="si-ico"></span>
+      <div class="si-body">
+        <div class="si-head"><span id="si-name"></span><span id="si-cost"></span></div>
+        <div id="si-desc"></div>
+        <div id="si-stats"></div>
+      </div>
     </div>
     <canvas id="game" width="840" height="600"></canvas>
     <div id="msg-bar">Choose a level to begin.</div>
@@ -214,6 +222,7 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/icons.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/entities.js"></script>
 <script src="js/main.js"></script>

@@ -9,6 +9,14 @@ window.addEventListener('load', () => {
   const log = s => { out.textContent += s + '\n'; };
   try {
     chooseLevel(0);
+    const iconsOk = document.querySelectorAll('.t-ico svg').length === 11;
+    log('shopIconsInjected=' + iconsOk);
+    selectTower('unit');
+    const infoShown = document.getElementById('shop-info').style.display !== 'none'
+      && document.getElementById('si-name').textContent === 'Unit Test';
+    cancelPlacement();
+    const infoHidden = document.getElementById('shop-info').style.display === 'none';
+    log('shopInfoToggles=' + (infoShown && infoHidden));
     for (const [type, c, r] of [['unit',1,3],['unit',3,3],['postman',5,6],['integration',3,5]]) {
       state.placing = type;
       placeTower(c, r);
@@ -64,7 +72,8 @@ window.addEventListener('load', () => {
           log('highScoresModal=' + hsOk);
           log('errors=' + JSON.stringify(window.__errors));
           const pass = state.cleared >= 2 && state.lives > 0 && kills > 0 && rejected
-            && modeOk && upgradeOk && xssOk && hsOk && hudOk && window.__errors.length === 0;
+            && modeOk && upgradeOk && xssOk && hsOk && hudOk && iconsOk
+            && infoShown && infoHidden && window.__errors.length === 0;
           log(pass ? 'TEST-PASS' : 'TEST-FAIL');
         }, 50);
       }

@@ -20,6 +20,7 @@ GitHub Pages). No build step, no dependencies.
 
 | Input | Action |
 |---|---|
+| Select a tower in the shop | Shows its full details (cost, range, rate, specials, strengths) above the board, or as a bottom sheet on mobile |
 | Click empty cell | Place selected tower |
 | Tap empty cell (touch) | Preview placement; tap again to confirm |
 | Click tower | Inspect / upgrade / sell / change targeting |
@@ -64,8 +65,13 @@ in `js/main.js`; it falls back to local storage when unset or unreachable.
 index.html      : markup and panels
 css/style.css   : styles (responsive down to mobile)
 js/data.js      : towers, bugs, levels, waves, endless generator
+js/icons.js     : tower icons as SVG path data (canvas + shop)
 js/audio.js     : WebAudio sound effects (no assets)
 js/entities.js  : Bug / Tower / Projectile / particles
 js/main.js      : game state, loop, rendering, input, UI
 scripts/        : headless smoke-test harness
 ```
+
+Tower icons for Cypress, Selenium, Postman and Docker use path data from the
+Simple Icons project (https://simpleicons.org, CC0). Trademarks belong to their
+respective owners. The remaining icons are drawn for this project.

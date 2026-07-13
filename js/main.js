@@ -98,6 +98,7 @@ function chooseLevel(idx) {
   document.getElementById('level-select').classList.remove('show');
   initState();
   hideTowerInfo();
+  hideShopInfo();
   document.querySelectorAll('.tower-btn').forEach(b => b.classList.remove('selected'));
   updateUI();
   setMsg(`${CURRENT_LEVEL.name}: Place test layers on the grid, then send the first wave. [Space] sends waves.`);
@@ -171,15 +172,54 @@ function awardClearBonus(waveNum) {
 function selectTower(type) {
   if (!CURRENT_LEVEL || state.gameOver || state.gameWon) return;
   const cost = TOWER_DEF[type].cost;
-  if (state.budget < cost) { setMsg(`Need $${cost} for ${TOWER_DEF[type].name}. Have $${Math.floor(state.budget)}.`); return; }
+  if (state.budget < cost) {
+    setMsg(`Need $${cost} for ${TOWER_DEF[type].name}. Have $${Math.floor(state.budget)}.`);
+    showShopInfo(type);   // still show what it does, even if unaffordable
+    return;
+  }
   touchPendingCell = null;
   state.placing = state.placing === type ? null : type;
   state.selectedTower = null; hideTowerInfo();
   document.querySelectorAll('.tower-btn').forEach(b => b.classList.remove('selected'));
   if (state.placing) {
     document.getElementById(`btn-${type}`).classList.add('selected');
+    showShopInfo(type);
     setMsg(`Click grid to place ${TOWER_DEF[type].name} ($${cost}). Right-click or ESC to cancel.`);
-  } else { setMsg('Placement cancelled.'); }
+  } else {
+    hideShopInfo();
+    setMsg('Placement cancelled.');
+  }
+}
+
+// details card for the tower being bought: shown above the board on
+// desktop and as a bottom sheet on mobile
+function showShopInfo(type) {
+  const d = TOWER_DEF[type];
+  const ico = document.getElementById('si-ico');
+  ico.innerHTML = iconSvg(type, 30);
+  ico.style.color = d.color;
+  const nameEl = document.getElementById('si-name');
+  nameEl.textContent = d.name;
+  nameEl.style.color = d.color;
+  document.getElementById('si-cost').textContent = `$${d.cost}`;
+  document.getElementById('si-desc').textContent = d.desc;
+  const specials = [];
+  if (d.splash) specials.push(`Splash ${d.splash}px`);
+  if (d.freeze) specials.push(`Freeze ${d.freeze}s`);
+  if (d.slow) specials.push(`Slow ${d.slow}s`);
+  if (d.multishot) specials.push(`${d.multishot} targets`);
+  if (d.retry) specials.push('Retries misses');
+  const strengths = Object.entries(d.dmg)
+    .filter(([k]) => k !== 'boss' && k !== 'megaboss')
+    .sort((a, b) => b[1] - a[1]).slice(0, 3)
+    .map(([k, v]) => `${BUG_DEF[k].label || k} ${v}`).join(', ');
+  document.getElementById('si-stats').textContent =
+    [`Range ${d.range}`, `Rate ${d.fireRate}ms`, ...specials, `Strong vs ${strengths}`].join(' · ');
+  document.getElementById('shop-info').style.display = 'flex';
+}
+
+function hideShopInfo() {
+  document.getElementById('shop-info').style.display = 'none';
 }
 
 function placeTower(col, row) {
@@ -197,6 +237,7 @@ function placeTower(col, row) {
   if (state.budget < cost) {
     state.placing = null;
     document.querySelectorAll('.tower-btn').forEach(b => b.classList.remove('selected'));
+    hideShopInfo();
   }
   updateUI();
 }
@@ -777,6 +818,7 @@ function restartGame() {
   state.placing = null;
   document.querySelectorAll('.tower-btn').forEach(b => b.classList.remove('selected'));
   hideTowerInfo();
+  hideShopInfo();
   initState(); updateUI();
   setMsg(`${CURRENT_LEVEL.name} restarted. Place test layers on the grid.`);
 }
@@ -795,6 +837,7 @@ function getCanvasCell(clientX, clientY) {
 
 function cancelPlacement() {
   touchPendingCell = null;
+  hideShopInfo();
   if (state.placing) {
     state.placing = null;
     document.querySelectorAll('.tower-btn').forEach(b => b.classList.remove('selected'));
@@ -894,9 +937,17 @@ function fitCanvas() {
   ctx.setTransform(scale, 0, 0, scale, 0, 0);
 }
 
+// inject the SVG tower icons into the shop buttons
+function initIcons() {
+  document.querySelectorAll('.t-ico[data-icon]').forEach(el => {
+    el.innerHTML = iconSvg(el.dataset.icon, 14);
+  });
+}
+
 function init() {
   canvas = document.getElementById('game');
   ctx = canvas.getContext('2d');
+  initIcons();
   fitCanvas();
   window.addEventListener('resize', fitCanvas);
   window.addEventListener('orientationchange', fitCanvas);

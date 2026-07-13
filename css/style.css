@@ -111,8 +111,8 @@ button { touch-action: manipulation; }
     padding: 8px 4px;
     text-align: center;
   }
-  .t-ico { display: block; font-size: 1.35rem; line-height: 1.5rem; }
-  .t-ico-txt { font-weight: bold; font-size: 1.05rem; }
+  .t-ico { display: block; line-height: 0; padding: 3px 0; }
+  .t-ico svg { width: 22px; height: 22px; vertical-align: baseline; }
   .t-name { display: none; }
   .cost-rest { display: none; }
   .btn-cost { font-size: 0.66rem; margin-top: 3px; }
@@ -156,6 +156,27 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
   height: auto;
   touch-action: none;
 }
+
+.t-ico svg { width: 13px; height: 13px; vertical-align: -2px; }
+.si-ico svg { display: block; }
+
+#shop-info {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  background: #111827;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+}
+.si-ico { line-height: 0; flex-shrink: 0; }
+.si-body { min-width: 0; }
+.si-head { display: flex; gap: 10px; align-items: baseline; margin-bottom: 2px; }
+#si-name { font-weight: bold; font-size: 0.78rem; letter-spacing: 1px; }
+#si-cost { color: #fbbf24; font-size: 0.7rem; font-weight: bold; }
+#si-desc { color: #94a3b8; font-size: 0.64rem; margin-bottom: 2px; }
+#si-stats { color: #4b5563; font-size: 0.6rem; line-height: 1.5; }
 
 #toolbar {
   display: flex;
@@ -463,6 +484,16 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
   .lc-best { margin-top: 6px; padding-top: 6px; font-size: 0.6rem; }
   #ls-scores-btn { margin-top: 14px; width: 100%; max-width: 420px; padding: 13px; }
   .sm-box { padding: 18px 14px; }
+
+  /* shop details float above the HUD as a bottom sheet, like the inspector */
+  #shop-info {
+    position: fixed;
+    left: 8px; right: 8px;
+    bottom: calc(66px + env(safe-area-inset-bottom));
+    z-index: 90;
+    margin-bottom: 0;
+    box-shadow: 0 -6px 24px rgba(0,0,0,0.55);
+  }
 }
 
 @media (min-width: 1201px) {
@@ -494,6 +525,9 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
   #msg-bar { font-size: 0.75rem; min-height: 22px; margin-top: 10px; }
   .tb-btn { font-size: 0.68rem; padding: 7px 14px; }
   .pv-chip { font-size: 0.62rem; }
+  .t-ico svg { width: 15px; height: 15px; }
+  #si-desc { font-size: 0.68rem; }
+  #si-stats { font-size: 0.64rem; }
   canvas { border: 1px solid #334155; box-shadow: 0 0 24px rgba(34,197,94,0.06); }
   .level-card { width: 230px; padding: 28px 24px; }
   .lc-name { font-size: 1.1rem; }
