@@ -492,7 +492,7 @@ async function submitScore(name, score, level) {
 
 function renderLeaderboard(el, scores, highlightScore) {
   if (!scores.length) {
-    el.innerHTML = '<div style="color:#4b5563;font-size:0.7rem;text-align:center;padding:12px 0">No scores yet. Be first!</div>';
+    el.innerHTML = '<div style="color:#94a3b8;font-size:0.7rem;text-align:center;padding:12px 0">No scores yet. Be first!</div>';
     return;
   }
   const rows = scores.map((s, i) => {
@@ -516,7 +516,7 @@ async function saveScore() {
 function showHighScores() {
   document.getElementById('scores-modal').classList.add('show');
   const el = document.getElementById('hs-list');
-  el.innerHTML = '<div style="color:#4b5563;font-size:0.7rem;text-align:center;padding:12px 0">Loading…</div>';
+  el.innerHTML = '<div style="color:#94a3b8;font-size:0.7rem;text-align:center;padding:12px 0">Loading…</div>';
   loadScores().then(scores => renderLeaderboard(el, scores, null));
 }
 
