@@ -3,8 +3,7 @@
 A QA-themed tower defense game. Bugs ride your CI/CD pipeline from `git push` toward
 production: place test layers along the path to catch them before they ship.
 
-**Play it:** open `index.html`, or deploy the repo to any static host (Vercel, Netlify,
-GitHub Pages). No build step, no dependencies.
+**Play it:** [Pipeline Defense](https://pipeline-defense.vercel.app)
 
 ## How to play
 
