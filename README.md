@@ -54,6 +54,10 @@ in `js/main.js`; it falls back to local storage when unset or unreachable.
 - The layout is responsive: the board scales to fill the space between the side panels
   on desktop (capped to the viewport height) and stacks vertically on mobile. The canvas
   backing store follows `devicePixelRatio` so scaling stays crisp.
+- Desktop layout: the shop is a two column grid so every tower is visible without
+  scrolling, the bug type legend sits in a strip under the board, and the mechanics
+  notes live in the right panel. Side panels are sticky and scroll internally on
+  short viewports instead of forcing the page to scroll.
 - Mobile play uses its own chrome: a fixed bottom HUD (budget, lives, wave, send-wave),
   a horizontal swipe strip for the tower shop, a floating bottom sheet for the tower
   inspector, and two-tap placement (tap to preview, tap again to confirm).

@@ -99,25 +99,6 @@
     <hr class="divider">
     <button id="triage-btn" onclick="runTriage()"><span class="tri-full">AI Triage ($200) <kbd>T</kbd></span><span class="tri-short">🩺 Triage<br>$200</span></button>
     <div class="shop-note" style="font-size:0.58rem;color:#94a3b8;margin-top:4px">Active ability: scans all towers and cuts flakiness by 60. Stacks with each use. Run when red bars appear.</div>
-    <hr class="divider mobile-hide">
-    <div class="mobile-hide" style="font-size:0.6rem;color:#94a3b8;margin-bottom:5px">BUG TYPES</div>
-    <div class="legend-item mobile-hide"><div class="ldot" style="background:#ef4444"></div>+-1 Off-by-one: fast, fragile</div>
-    <div class="legend-item mobile-hide"><div class="ldot" style="background:#f97316"></div>.1 Floating point: precision errors</div>
-    <div class="legend-item mobile-hide"><div class="ldot" style="background:#8b5cf6"></div>|| Race condition: slow, tanky</div>
-    <div class="legend-item mobile-hide"><div class="ldot" style="background:#94a3b8"></div>TZ Timezone: unpredictable</div>
-    <div class="legend-item mobile-hide"><div class="ldot" style="background:#dc2626"></div>MUT State mutation: splits on death</div>
-    <div class="legend-item mobile-hide"><div class="ldot" style="background:#16a34a"></div>?! Silent failure: invisible until late</div>
-    <div class="legend-item mobile-hide"><div class="ldot" style="background:#0f766e"></div>SU Permission esc: immune to Unit</div>
-    <div class="legend-item mobile-hide"><div class="ldot" style="background:#7e22ce"></div>2x Idempotency: 25% chance to duplicate</div>
-    <div class="legend-item mobile-hide"><div class="ldot" style="background:#eab308"></div>ML Memory leak: regenerates HP</div>
-    <div class="legend-item mobile-hide"><div class="ldot" style="background:#ea580c;border-radius:2px"></div>Boss: high HP, slow</div>
-    <div class="legend-item mobile-hide"><div class="ldot" style="background:#7c3aed;border-radius:2px"></div>Megaboss: elite threat</div>
-    <hr class="divider mobile-hide">
-    <div class="mobile-hide" style="font-size:0.6rem;color:#94a3b8;margin-bottom:4px">MECHANICS</div>
-    <div class="legend-item mobile-hide" style="color:#94a3b8">Synergy: adjacent towers fire 15% faster</div>
-    <div class="legend-item mobile-hide" style="color:#94a3b8">Cyan ring: slowed bug</div>
-    <div class="legend-item mobile-hide" style="color:#94a3b8">Blue glow: frozen bug (Docker)</div>
-    <div class="legend-item mobile-hide" style="color:#94a3b8">Early wave call: cash bonus</div>
   </div>
 
   <!-- CANVAS -->
@@ -137,6 +118,24 @@
         <div class="si-head"><span id="si-name"></span><span id="si-cost"></span></div>
         <div id="si-desc"></div>
         <div id="si-stats"></div>
+      </div>
+    </div>
+    <div id="board-legend" class="mobile-hide">
+      <div class="legend-block">
+        <div class="legend-title">Bug Types</div>
+        <div class="legend-grid">
+          <div class="legend-item"><div class="ldot" style="background:#ef4444"></div>+-1 Off-by-one: fast, fragile</div>
+          <div class="legend-item"><div class="ldot" style="background:#f97316"></div>.1 Floating point: precision errors</div>
+          <div class="legend-item"><div class="ldot" style="background:#8b5cf6"></div>|| Race condition: slow, tanky</div>
+          <div class="legend-item"><div class="ldot" style="background:#94a3b8"></div>TZ Timezone: unpredictable</div>
+          <div class="legend-item"><div class="ldot" style="background:#dc2626"></div>MUT State mutation: splits on death</div>
+          <div class="legend-item"><div class="ldot" style="background:#16a34a"></div>?! Silent failure: invisible until late</div>
+          <div class="legend-item"><div class="ldot" style="background:#0f766e"></div>SU Permission esc: immune to Unit</div>
+          <div class="legend-item"><div class="ldot" style="background:#7e22ce"></div>2x Idempotency: 25% chance to duplicate</div>
+          <div class="legend-item"><div class="ldot" style="background:#eab308"></div>ML Memory leak: regenerates HP</div>
+          <div class="legend-item"><div class="ldot" style="background:#ea580c;border-radius:2px"></div>Boss: high HP, slow</div>
+          <div class="legend-item"><div class="ldot" style="background:#7c3aed;border-radius:2px"></div>Megaboss: elite threat</div>
+        </div>
       </div>
     </div>
   </div>
@@ -167,6 +166,16 @@
       <h3>Test Debt</h3>
       <div class="info-text">
         Towers degrade each wave. Flaky tests miss shots. Red bar = danger. Use AI Triage to stabilize.
+      </div>
+    </div>
+    <hr class="divider mobile-hide">
+    <div class="mobile-hide">
+      <h3>Mechanics</h3>
+      <div class="info-text">
+        <span>Synergy: adjacent towers fire 15% faster</span>
+        <span>Cyan ring: slowed bug</span>
+        <span>Blue glow: frozen bug (Docker)</span>
+        <span>Early wave call: cash bonus</span>
       </div>
     </div>
     <hr class="divider mobile-hide">

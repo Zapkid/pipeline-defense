@@ -284,6 +284,30 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
 .divider { border: none; border-top: 1px solid #1e293b; margin: 10px 0; }
 .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.58rem; color: #94a3b8; margin-bottom: 3px; }
 .ldot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* bug reference strip under the board (hidden on phones) */
+#board-legend { margin-top: 8px; }
+.legend-block {
+  background: #111827;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.legend-title {
+  color: #94a3b8;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #1e293b;
+  padding-bottom: 4px;
+}
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 3px 16px;
+}
+.legend-grid .legend-item { margin-bottom: 0; }
 .info-text { font-size: 0.6rem; color: #94a3b8; line-height: 1.6; }
 .info-text span { display: block; }
 
@@ -497,38 +521,67 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
 }
 
 @media (min-width: 1201px) {
-  body { padding: 18px 24px; }
-  h1 { font-size: 1.6rem; letter-spacing: 5px; margin-bottom: 14px; }
-  h1 span { font-size: 0.85rem; letter-spacing: 2px; }
+  body { padding: 14px 24px; }
+  h1 { font-size: 1.45rem; letter-spacing: 5px; margin-bottom: 10px; }
+  h1 span { font-size: 0.8rem; letter-spacing: 2px; }
   #game-wrapper { gap: 16px; width: 100%; max-width: 1800px; justify-content: center; }
   #canvas-wrapper { flex: 1 1 auto; }
-  /* fill the space between the panels, but never taller than the viewport */
+  /* fill the space between the panels, but never taller than the viewport
+     (220px of chrome above/below plus the legend strip under the board) */
   #canvas-wrapper canvas {
-    max-width: calc((100vh - 220px) * 1.4);
-    max-width: calc((100dvh - 220px) * 1.4);
+    max-width: calc((100vh - 330px) * 1.4);
+    max-width: calc((100dvh - 330px) * 1.4);
     margin: 0 auto;
   }
   #toolbar { justify-content: center; }
   #msg-bar { text-align: center; }
-  .panel { width: 270px; flex: 0 0 270px; padding: 17px 16px; }
-  .panel h3 { font-size: 0.86rem; margin-bottom: 11px; padding-bottom: 7px; }
-  .shop-section-label { font-size: 0.72rem; margin: 11px 0 6px; }
-  .tower-btn { font-size: 0.9rem; padding: 11px 13px; margin-bottom: 9px; }
-  .btn-cost { font-size: 0.78rem; margin-top: 2px; }
-  .btn-desc { font-size: 0.76rem; margin-top: 3px; }
-  kbd { font-size: 0.66rem; }
-  .stat-row { font-size: 1rem; margin-bottom: 11px; }
-  .legend-item { font-size: 0.78rem; margin-bottom: 6px; }
-  .ldot { width: 10px; height: 10px; }
-  .info-text { font-size: 0.8rem; line-height: 1.7; }
-  #wave-btn { font-size: 0.95rem; padding: 13px; margin-top: 8px; }
-  #triage-btn { font-size: 0.84rem; padding: 11px; margin-top: 8px; }
-  .shop-note { font-size: 0.72rem !important; }
+  /* panels never force the page to scroll: they stick and scroll internally
+     on short viewports (e.g. 1366x768 laptops) */
+  .panel {
+    padding: 14px 16px;
+    position: sticky;
+    top: 14px;
+    max-height: calc(100vh - 28px);
+    max-height: calc(100dvh - 28px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #334155 transparent;
+  }
+  .panel h3 { font-size: 0.78rem; margin-bottom: 8px; padding-bottom: 5px; }
+
+  /* the shop is a two-column grid so all towers fit on screen at once */
+  #shop-panel { width: 384px; flex: 0 0 384px; display: grid; grid-template-columns: 1fr 1fr; gap: 7px; align-content: start; }
+  #shop-panel > h3, #shop-panel > .shop-section-label, #shop-panel > .divider,
+  #shop-panel > #triage-btn, #shop-panel > .shop-note { grid-column: 1 / -1; }
+  #shop-panel > h3 { margin-bottom: 0; }
+  #shop-panel .shop-section-label { margin: 2px 0 0; }
+  #shop-panel .divider { margin: 2px 0; }
+  #shop-panel .shop-note { margin-top: 0 !important; }
+  #stats-panel { width: 280px; flex: 0 0 280px; }
+  #stats-panel .divider { margin: 8px 0; }
+
+  .shop-section-label { font-size: 0.66rem; }
+  .tower-btn { font-size: 0.76rem; padding: 8px 10px; margin-bottom: 0; }
+  .btn-cost { font-size: 0.66rem; margin-top: 2px; }
+  .btn-desc { font-size: 0.64rem; margin-top: 3px; line-height: 1.45; }
+  kbd { font-size: 0.6rem; }
+  .stat-row { font-size: 0.88rem; margin-bottom: 8px; }
+  .legend-item { font-size: 0.72rem; margin-bottom: 6px; }
+  .ldot { width: 9px; height: 9px; }
+  .legend-title { font-size: 0.72rem; }
+  #board-legend { margin-top: 10px; }
+  .legend-block { padding: 10px 14px; }
+  .legend-grid { gap: 5px 18px; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); }
+  .legend-grid .legend-item { font-size: 0.7rem; margin-bottom: 0; }
+  .info-text { font-size: 0.74rem; line-height: 1.6; }
+  #wave-btn { font-size: 0.92rem; padding: 11px; margin-top: 6px; }
+  #triage-btn { font-size: 0.76rem; padding: 10px; margin-top: 0; }
+  .shop-note { font-size: 0.66rem !important; }
   #msg-bar { font-size: 0.95rem; min-height: 26px; margin-top: 10px; }
   .tb-btn { font-size: 0.82rem; padding: 9px 18px; }
   .pv-chip { font-size: 0.76rem; padding: 4px 8px; }
   .pv-chip i { width: 9px; height: 9px; }
-  .t-ico svg { width: 19px; height: 19px; }
+  .t-ico svg { width: 17px; height: 17px; }
   #si-name { font-size: 1rem; }
   #si-cost { font-size: 0.88rem; }
   #si-desc { font-size: 0.85rem; }
