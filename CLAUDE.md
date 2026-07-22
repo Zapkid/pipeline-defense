@@ -27,6 +27,7 @@ For each feature, before it merges:
 ## Workflow rules (learned the hard way)
 
 - Always branch PRs off `main`; never stack on another open branch (it silently drops commits when the base merges first).
+- Always open a PR once a branch is pushed: the PR is what produces the Vercel preview deployment for review.
 - Squash-merge and delete the branch; keep zero open PRs as the resting state.
 - One PR per concern.
 - No dependencies and no build step without explicit approval. The game must keep working when `index.html` is opened straight from disk.
