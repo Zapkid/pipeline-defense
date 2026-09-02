@@ -33,3 +33,4 @@ For each feature, before it merges:
 - No dependencies and no build step without explicit approval. The game must keep working when `index.html` is opened straight from disk.
 - Scores: leaderboard and bests live in `localStorage`. `SCORES_ENDPOINT` in `js/main.js` may point to an optional public scores API; it must fail soft to local storage, and nothing secret ever goes in this repo (it is fully client-side).
 - Anything user-visible that is injected into `innerHTML` (player names, level labels) goes through `escapeHtml`. No exceptions.
+- Privacy (GDPR): no cookies, no analytics, no third-party resources. Any new `localStorage` key, network call or external resource must be added to the privacy notice in `index.html` (and `LOCAL_DATA_KEYS` in `js/main.js` for storage) plus the README privacy section, in the same PR. Personal data never leaves the browser without an explicit opt-in.

@@ -70,11 +70,48 @@ window.addEventListener('load', () => {
           const hsOk = document.getElementById('scores-modal').classList.contains('show');
           hideHighScores();
           log('highScoresModal=' + hsOk);
-          log('errors=' + JSON.stringify(window.__errors));
-          const pass = state.cleared >= 2 && state.lives > 0 && kills > 0 && rejected
-            && modeOk && upgradeOk && xssOk && hsOk && hudOk && iconsOk
-            && infoShown && infoHidden && window.__errors.length === 0;
-          log(pass ? 'TEST-PASS' : 'TEST-FAIL');
+
+          // GDPR: nothing leaves the browser without the endpoint AND opt-in.
+          const realFetch = window.fetch;
+          const calls = [];
+          window.fetch = async (u, o) => { calls.push(o && o.method ? o.method : 'GET'); throw new Error('offline'); };
+          const noEndpointHidden = document.getElementById('o-publish-row').style.display === 'none';
+          SCORES_ENDPOINT = 'https://scores.invalid/';
+          showOverlay(false);
+          const endpointShown = document.getElementById('o-publish-row').style.display !== 'none'
+            && !document.getElementById('o-publish').checked;
+          Promise.resolve()
+            .then(() => { calls.length = 0; return saveScore(); })                      // no consent
+            .then(() => {
+              const noConsentOk = !calls.includes('POST');
+              document.getElementById('o-publish').checked = true;
+              calls.length = 0;
+              return saveScore().then(() => noConsentOk);                              // consent
+            })
+            .then(noConsentOk => {
+              const consentOk = calls.includes('POST');
+              SCORES_ENDPOINT = null;
+              window.fetch = realFetch;
+              log('publishOptIn=' + (noEndpointHidden && endpointShown && noConsentOk && consentOk));
+
+              showPrivacy();
+              const pvShown = document.getElementById('privacy-modal').classList.contains('show');
+              const hadData = ['pd_best', 'pd_scores'].every(k => localStorage.getItem(k) !== null);
+              clearLocalData();
+              const wiped = ['pd_mute', 'pd_autowave', 'pd_best', 'pd_scores']
+                .every(k => localStorage.getItem(k) === null);
+              hidePrivacy();
+              const pvHidden = !document.getElementById('privacy-modal').classList.contains('show');
+              const privacyOk = pvShown && hadData && wiped && pvHidden;
+              log('privacyClear=' + privacyOk);
+
+              log('errors=' + JSON.stringify(window.__errors));
+              const pass = state.cleared >= 2 && state.lives > 0 && kills > 0 && rejected
+                && modeOk && upgradeOk && xssOk && hsOk && hudOk && iconsOk
+                && infoShown && infoHidden && noConsentOk && consentOk
+                && noEndpointHidden && endpointShown && privacyOk && window.__errors.length === 0;
+              log(pass ? 'TEST-PASS' : 'TEST-FAIL');
+            });
         }, 50);
       }
     }, 5);

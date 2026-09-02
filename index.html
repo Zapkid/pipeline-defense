@@ -16,6 +16,7 @@
   <div class="ls-sub">CHOOSE YOUR ENVIRONMENT</div>
   <div class="level-cards" id="level-cards"></div>
   <button id="ls-scores-btn" onclick="showHighScores()">🏆 HIGH SCORES</button>
+  <button class="privacy-link" onclick="showPrivacy()">Privacy</button>
 </div>
 
 <!-- High Scores Modal -->
@@ -25,6 +26,28 @@
     <div class="sm-sub">ALL ENVIRONMENTS</div>
     <div id="hs-list"></div>
     <button id="hs-close-btn" onclick="hideHighScores()">Close</button>
+  </div>
+</div>
+
+<!-- Privacy Notice Modal -->
+<div id="privacy-modal" onclick="if (event.target === this) hidePrivacy()">
+  <div class="sm-box">
+    <h2>🔒 Privacy</h2>
+    <div class="sm-sub">WHAT THIS GAME STORES AND WHY</div>
+    <div id="privacy-text">
+      <p><b>No cookies, no tracking.</b> This site sets no cookies and loads no analytics, ads, fonts or scripts from third parties.</p>
+      <p><b>Stored in your browser only.</b> The game keeps your settings (sound, auto-wave), your best score per environment and the local high score list, including the nickname you type on the end screen, in this browser's local storage. It never leaves your device and is not sent to us. Use the button below to delete all of it at any time, or clear this site's data in your browser.</p>
+      <div id="privacy-remote" style="display:none">
+        <p><b>Global leaderboard (opt-in).</b> If you tick "Publish to the global leaderboard" when saving a score, your nickname, score, environment and the date are sent to our scores service (hosted on Supabase) and shown publicly to every player. Nothing is sent unless you tick that box. Please use a nickname rather than your real name. Entries are removed on request: contact the site owner via the link below and quote the nickname, score and date.</p>
+        <p><b>Reading the leaderboard</b> fetches the public list from the scores service, which sees your IP address like any web request.</p>
+      </div>
+      <p><b>Hosting.</b> The site is served by Vercel, whose infrastructure processes your IP address and request headers to deliver the page and may keep short-lived server logs for security. We do not use this data.</p>
+      <p><b>Your rights.</b> Under the GDPR you can access, correct and erase your data. Data held in your browser is under your control (button below). For anything else, contact the site owner via <a href="https://rowan-kendal.com" target="_blank" rel="noopener">rowan-kendal.com</a>.</p>
+    </div>
+    <div class="privacy-btns">
+      <button id="privacy-clear-btn" onclick="clearLocalData()">Delete my local data</button>
+      <button id="privacy-close-btn" onclick="hidePrivacy()">Close</button>
+    </div>
   </div>
 </div>
 
@@ -219,9 +242,14 @@
   <div class="final-score" id="o-score"></div>
   <div class="final-detail" id="o-detail"></div>
   <div id="o-name-row">
-    <input id="o-name" type="text" placeholder="Your name" maxlength="20" />
+    <input id="o-name" type="text" placeholder="Nickname (optional)" maxlength="20" autocomplete="off" />
     <button id="o-save-btn" onclick="saveScore()">Save Score</button>
   </div>
+  <label id="o-publish-row" style="display:none">
+    <input id="o-publish" type="checkbox" />
+    <span>Publish to the global leaderboard (nickname, score, environment, date are shown publicly)</span>
+  </label>
+  <div class="o-privacy-note">Scores are saved in this browser only. <button class="privacy-link" onclick="showPrivacy()">Privacy</button></div>
   <div id="o-leaderboard"></div>
   <div class="overlay-btns">
     <button id="endless-btn" onclick="continueEndless()" style="display:none">⚡ Continue: Endless</button>

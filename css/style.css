@@ -459,14 +459,14 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
 }
 #ls-scores-btn:hover { background: #422006; }
 
-#scores-modal {
+#scores-modal, #privacy-modal {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,0.9);
   align-items: center; justify-content: center;
   z-index: 300;
   padding: 20px;
 }
-#scores-modal.show { display: flex; }
+#scores-modal.show, #privacy-modal.show { display: flex; }
 .sm-box {
   background: #111827; border: 1px solid #334155; border-radius: 8px;
   padding: 24px 28px; max-width: 480px; width: 100%;
@@ -491,6 +491,35 @@ canvas { border: 1px solid #1e293b; cursor: crosshair; display: block; }
   padding: 9px; cursor: pointer; border-radius: 4px; width: 100%;
 }
 #hs-close-btn:hover { background: #334155; }
+
+/* privacy notice */
+.privacy-link {
+  background: none; border: none; padding: 0; margin-top: 14px;
+  color: #64748b; font-family: 'Courier New', monospace; font-size: 0.62rem;
+  letter-spacing: 1px; text-decoration: underline; cursor: pointer;
+}
+.privacy-link:hover { color: #cbd5e1; }
+#privacy-text { overflow-y: auto; margin-bottom: 16px; font-size: 0.68rem; line-height: 1.6; color: #cbd5e1; }
+#privacy-text p { margin-bottom: 10px; }
+#privacy-text b { color: #e2e8f0; }
+#privacy-text a { color: #93c5fd; }
+.privacy-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.privacy-btns button {
+  flex: 1 1 160px; font-family: 'Courier New', monospace; font-size: 0.75rem;
+  padding: 9px; cursor: pointer; border-radius: 4px;
+}
+#privacy-close-btn { background: #1e293b; border: 1px solid #475569; color: #cbd5e1; }
+#privacy-close-btn:hover { background: #334155; }
+#privacy-clear-btn { background: #3f1d1d; border: 1px solid #b91c1c; color: #fca5a5; }
+#privacy-clear-btn:hover:not(:disabled) { background: #7f1d1d; }
+#privacy-clear-btn:disabled { background: #1f2937; border-color: #374151; color: #6b7280; cursor: not-allowed; }
+#o-publish-row {
+  display: flex; align-items: flex-start; gap: 8px; max-width: 420px;
+  margin: -6px auto 12px; font-size: 0.66rem; color: #cbd5e1; text-align: left; cursor: pointer;
+}
+#o-publish-row input { margin-top: 2px; accent-color: #3b82f6; }
+.o-privacy-note { font-size: 0.62rem; color: #64748b; margin-bottom: 16px; }
+.o-privacy-note .privacy-link { margin-top: 0; }
 
 /* level select becomes a compact list on phones: all levels on one screen.
    Kept after the base level-select rules so these overrides win the cascade. */
