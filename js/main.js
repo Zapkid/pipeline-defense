@@ -452,7 +452,10 @@ function updateUI() {
 // SCORES_ENDPOINT is set (GET returns {scores:[...]}, POST accepts an
 // entry) it is used as the source of truth and fails soft to local.
 // ────────────────────────────────────────────────────────────
-const SCORES_ENDPOINT = null;   // deploy supabase/ and set the function URL here (see supabase/README.md)
+// Privacy: entries only leave the browser when SCORES_ENDPOINT is set AND the
+// player ticked the publish checkbox on the end screen (GDPR opt-in consent).
+// The privacy notice (#privacy-modal) must describe whatever is sent here.
+let SCORES_ENDPOINT = null;   // deploy supabase/ and set the function URL here (see supabase/README.md)
 
 function localScores() {
   try { return JSON.parse(localStorage.getItem('pd_scores') || '[]'); } catch (e) { return []; }
@@ -469,14 +472,14 @@ async function loadScores() {
   return localScores();
 }
 
-async function submitScore(name, score, level) {
+async function submitScore(name, score, level, publish) {
   const entry = { name, score, level, date: new Date().toISOString().slice(0, 10) };
   const scores = localScores();
   scores.push(entry);
   scores.sort((a, b) => b.score - a.score);
   scores.splice(10);
   savePref('pd_scores', JSON.stringify(scores));
-  if (SCORES_ENDPOINT) {
+  if (SCORES_ENDPOINT && publish === true) {
     try {
       const r = await fetch(SCORES_ENDPOINT, {
         method: 'POST',
@@ -509,8 +512,44 @@ async function saveScore() {
   const overtime = state.cleared - WAVE_DEFS.length;
   const levelLabel = CURRENT_LEVEL
     ? CURRENT_LEVEL.name + (overtime > 0 ? ` +${overtime}` : '') : '';
-  const scores = await submitScore(name, state.score, levelLabel);
+  const publish = !!SCORES_ENDPOINT && document.getElementById('o-publish').checked;
+  const scores = await submitScore(name, state.score, levelLabel, publish);
   renderLeaderboard(document.getElementById('o-leaderboard'), scores, state.score);
+}
+
+// ────────────────────────────────────────────────────────────
+// PRIVACY
+// Everything the game stores lives in localStorage under pd_* keys (prefs,
+// per-level bests, local leaderboard). No cookies, no analytics. The notice
+// in #privacy-modal lists this; keep it in sync when adding storage or
+// network calls. clearLocalData is the player's erasure control.
+// ────────────────────────────────────────────────────────────
+const LOCAL_DATA_KEYS = ['pd_mute', 'pd_autowave', 'pd_best', 'pd_scores'];
+
+function showPrivacy() {
+  document.getElementById('privacy-remote').style.display = SCORES_ENDPOINT ? 'block' : 'none';
+  document.getElementById('privacy-clear-btn').disabled = false;
+  document.getElementById('privacy-clear-btn').textContent = 'Delete my local data';
+  document.getElementById('privacy-modal').classList.add('show');
+}
+
+function hidePrivacy() {
+  document.getElementById('privacy-modal').classList.remove('show');
+}
+
+function clearLocalData() {
+  if (SFX.muted) SFX.toggle();   // before the wipe: toggle() writes pd_mute
+  state.autoWave = false;
+  for (const k of LOCAL_DATA_KEYS) { try { localStorage.removeItem(k); } catch (e) {} }
+  renderLevelCards();
+  const lb = document.getElementById('o-leaderboard');
+  if (lb.innerHTML) renderLeaderboard(lb, [], null);
+  const hs = document.getElementById('hs-list');
+  if (hs.innerHTML) renderLeaderboard(hs, [], null);
+  if (CURRENT_LEVEL) updateUI();
+  const btn = document.getElementById('privacy-clear-btn');
+  btn.disabled = true;
+  btn.textContent = 'Local data deleted';
 }
 
 function showHighScores() {
@@ -795,6 +834,8 @@ function showOverlay(won) {
   document.getElementById('o-save-btn').disabled = false;
   document.getElementById('o-save-btn').textContent = 'Save Score';
   document.getElementById('o-name').value = '';
+  document.getElementById('o-publish').checked = false;
+  document.getElementById('o-publish-row').style.display = SCORES_ENDPOINT ? 'flex' : 'none';
   document.getElementById('endless-btn').style.display = won ? 'inline-block' : 'none';
   document.getElementById('overlay').classList.add('show');
   if (won) SFX.win(); else SFX.lose();

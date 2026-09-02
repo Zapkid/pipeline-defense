@@ -44,7 +44,29 @@ production: place test layers along the path to catch them before they ship.
 The high score list covers all environments and is reachable from the level select
 screen (🏆 High Scores) and from the end-of-game screen. Scores and per-level bests are
 stored in your browser. An optional remote scores API can be wired via `SCORES_ENDPOINT`
-in `js/main.js`; it falls back to local storage when unset or unreachable.
+in `js/main.js`; it falls back to local storage when unset or unreachable. When it is
+set, a score is only published if the player ticks the opt-in checkbox on the end screen.
+
+### Privacy (GDPR)
+
+The game is designed to need no consent banner: it sets no cookies and loads nothing
+from third parties (no analytics, ads, fonts or external scripts).
+
+- **Local storage only**: settings (`pd_mute`, `pd_autowave`), per-level bests (`pd_best`)
+  and the local leaderboard including the typed nickname (`pd_scores`) stay in the browser.
+  This is storage strictly necessary for features the player asked for, so it needs no
+  consent, but it is disclosed in the in-game privacy notice.
+- **Privacy notice**: reachable from the level select screen and the end-of-game screen
+  ("Privacy"). It lists what is stored, the hosting provider, the optional global
+  leaderboard, and the player's rights and contact route.
+- **Erasure**: the notice has a "Delete my local data" button (`clearLocalData`) that wipes
+  every `pd_*` key and refreshes the UI.
+- **Global leaderboard is opt-in**: with `SCORES_ENDPOINT` set, the end screen shows an
+  unchecked "Publish to the global leaderboard" box. Nothing is POSTed unless it is ticked.
+  Server-side duties (region, retention, deletion requests) are in `supabase/README.md`.
+- **Adding data collection**: any new storage key, network call or third-party resource
+  must update the notice in `index.html` and this section in the same PR. The smoke test
+  checks the opt-in gate and the erasure button.
 
 ## Development
 

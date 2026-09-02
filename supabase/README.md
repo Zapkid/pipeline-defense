@@ -42,3 +42,35 @@ is unset or unreachable, so this can be enabled or rolled back at any time.
 - Nothing here is secret: the function URL is public by design and no keys ship
   with the game (see the scores rule in `CLAUDE.md`).
 - Server-side limits: name 1-20 chars, level up to 24 chars, score 0 to 5,000,000.
+
+## GDPR duties once this is live
+
+Enabling the endpoint makes whoever deploys it the data controller for the
+nicknames in `pd_scores`. The game side is already handled: the end screen shows
+an unchecked "Publish to the global leaderboard" box and nothing is POSTed
+without it, and the in-game privacy notice describes the service. Server side:
+
+- **Data minimisation**: the table holds nickname, score, level and a timestamp
+  only. Keep it that way; do not add IP addresses or user agents.
+- **Region**: create the Supabase project in an EU region (for example
+  `eu-central-1`) so player data is not transferred outside the EEA.
+- **Logs**: Supabase keeps edge function and API logs (which include client IPs)
+  for a limited time under its own retention. Sign Supabase's DPA in the dashboard
+  (Organization settings, Legal documents).
+- **Retention**: decide how long entries live and prune on a schedule, for
+  example monthly via the SQL editor or `pg_cron`:
+
+  ```sql
+  delete from public.pd_scores where created_at < now() - interval '12 months';
+  ```
+
+- **Erasure requests**: players are told to contact the site owner with the
+  nickname, score and date. Delete matching rows with:
+
+  ```sql
+  delete from public.pd_scores
+   where name = '<nickname>' and score = <score> and created_at::date = '<YYYY-MM-DD>';
+  ```
+
+- **Notice**: if you change what is stored or where, update the privacy notice
+  in `index.html` and the README privacy section in the same change.
